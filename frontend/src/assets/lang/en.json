@@ -6,5 +6,19 @@
       "forgotPassword": "Forgot password?",
       "btnSignIn": "SIGN IN",
       "newToProduct": "New to Product? Sign Up"
+    },
+    "signUp": {
+      "inputFirstNamePlaceholder": "First Name *",
+      "inputLastNamePlaceholder": "Last Name *",
+      "inputTelPlaceholder": "Tel:",
+      "inputEmailPlaceholder": "Email *",
+      "inputUsernamePlaceholder": "Username *",
+      "inputPasswordPlaceholder": "Password *",
+      "inputConfirmPasswordPlaceholder": "Confirm Password *",
+      "agreeWithTerms": "Agree With",
+      "termsAndConditions": "Terms & Conditions",
+      "btnSignUp": "SIGN UP",
+      "alreadyMember": "Already member?",
+      "linkSignIn": "Sing In"
     }
 }

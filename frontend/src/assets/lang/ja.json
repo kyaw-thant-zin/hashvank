@@ -6,5 +6,19 @@
     "forgotPassword": "パスワード再設定",
     "btnSignIn": "ログイン",
     "newToProduct": "まだアカウントをお持ちでない方はこちら"
+  },
+  "signUp": {
+    "inputFirstNamePlaceholder": "名 *",
+    "inputLastNamePlaceholder": "Last Name *",
+    "inputTelPlaceholder": "Tel:",
+    "inputEmailPlaceholder": "Email *",
+    "inputUsernamePlaceholder": "Username *",
+    "inputPasswordPlaceholder": "Password *",
+    "inputConfirmPasswordPlaceholder": "Confirm Password *",
+    "agreeWithTerms": "Agree With",
+    "termsAndConditions": "Terms & Conditions",
+    "btnSignUp": "SIGN UP",
+    "alreadyMember": "Already member?",
+    "linkSignIn": "Sing In"
   }
 }
