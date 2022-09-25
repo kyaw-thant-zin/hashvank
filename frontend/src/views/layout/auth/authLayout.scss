@@ -1,0 +1,33 @@
+.sidebar {
+    padding: 0px 10px !important;
+    margin-top: 10px !important;
+    &-item {
+        a {
+            display: block;
+            width: 100%;
+            color: #172B4D;
+            font-family: 'GothamMedium, sans-serif';
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        &-btn {
+            padding: 15px 10px 15px 10px !important;
+            border-radius: 5px !important;
+            -webkit-border-radius: 5px !important;
+            -moz-border-radius: 5px !important;
+            -ms-border-radius: 5px !important;
+            -o-border-radius: 5px !important;
+            &.active {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
+
+        }
+
+        &-icon {
+            min-width: unset !important;
+            margin-right: 10px !important;
+        }
+    }
+}

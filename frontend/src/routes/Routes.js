@@ -2,8 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // PAGES
-import SignIn from "../views/pages/common/SignIn";
-import SignUp from "../views/pages/common/SignUp";
+import SignIn from "../views/pages/common/sign/SignIn";
+import SignUp from "../views/pages/common/sign/SignUp";
+
+import Dashboard from "../views/pages/auth/dashboard/Dashboard";
 
 const PagesRoutes = () => {
     
@@ -11,7 +13,9 @@ const PagesRoutes = () => {
         <Router basename='/' >
             <Routes>
                 {/* AUTH PAGES */}
-
+                <Route exact path='dashboard'>
+                  <Route exact path='/dashboard/' element={<Dashboard />} ></Route>
+                </Route>
 
 
                 {/* PAGES */}

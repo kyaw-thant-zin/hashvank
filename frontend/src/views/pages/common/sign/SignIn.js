@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
 // FORM VALIDATION
-import Validation from '../../../common/FormValidation';
+import Validation from '../../../../common/FormValidation';
 
 // MUI
 import { Box, Button, Card, CardContent, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material';
@@ -15,17 +15,17 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 // THEME
-import {theme} from "../../layout/Theme";
-import Layout from '../../layout/common/Layout';
+import {theme} from "../../../layout/Theme";
+import Layout from '../../../layout/common/Layout';
 
 // CMPONENTS
-import LoadingComponent from '../../components/Loading';
+import LoadingComponent from '../../../components/Loading';
 
 // SCSS
-import './common.scss';
+import '../common.scss';
 
 // LANG
-import { t } from '../../../common/SwitchLang';
+import { t } from '../../../../common/SwitchLang';
 
 
 const SignIn = () => {
