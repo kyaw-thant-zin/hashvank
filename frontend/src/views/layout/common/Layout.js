@@ -4,7 +4,7 @@ import { Box, CssBaseline  } from '@mui/material';
 const Layout = (props) => {
 
     return (
-      <Box  sx={{ display: 'flex', background: props.background }}>
+      <Box  sx={{ display: 'flex', background: "#263642" }}>
         <CssBaseline />
         <Box
           component="main"

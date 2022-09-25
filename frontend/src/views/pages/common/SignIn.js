@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // REDUX
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
 // ROUTER
 import { useNavigate, useLocation, Link } from "react-router-dom";
@@ -17,6 +17,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // THEME
 import {theme} from "../../layout/Theme";
 import Layout from '../../layout/common/Layout';
+
+// CMPONENTS
+import LoadingComponent from '../../components/Loading';
 
 // SCSS
 import './common.scss';
@@ -115,10 +118,14 @@ const SignIn = () => {
     
     }
 
+    if(isLoaing) {
+        return <LoadingComponent />
+    }
+
 
     return (
         <>
-            <Layout background="#263642">
+            <Layout>
                 <Grid container justifyContent='center'>
                     <Grid item xs={10} sm={8} md={6} lg={4} xl={3}>
                         <Card sx={{ background: '#F7FAFC', borderRadius: '10px' }}>
