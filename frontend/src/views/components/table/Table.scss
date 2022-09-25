@@ -1,0 +1,15 @@
+.multiLineEllipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: box;
+    -webkit-display: -webkit-box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+}
+
+.underLineLink {
+    color: #172B4D;
+    text-decoration: underline !important;
+}
