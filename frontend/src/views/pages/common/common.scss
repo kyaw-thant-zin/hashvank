@@ -1,0 +1,145 @@
+
+.login-input {
+
+    box-shadow: unset !important;
+
+    .MuiOutlinedInput-root {
+        color: #172B4D !important;
+        font-family: "GothamBook", sans-serif;
+        font-size: 16px;
+        font-weight: 350;
+        background-color: #fff;
+
+        input {
+            &::placeholder {
+                color: #172B4D !important;
+                opacity: 0.8; /* Firefox */
+            }
+            
+            &:-ms-input-placeholder {
+                color: #172B4D;
+                opacity: 0.8; /* Firefox */
+            }
+            
+            &::-ms-input-placeholder { /* Microsoft Edge */
+                color: #172B4D;
+            }
+        }
+    }
+
+    & fieldset{
+        border-color: #fff !important;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0 ,0, 0, 0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+    }
+
+    & .MuiInputAdornment-root {
+        color: #172B4D;
+    }
+}
+
+.remember-me {
+    .MuiFormControlLabel-label {
+        font-family: "GothamBook", sans-serif;
+        font-size: 13px;
+        font-weight: 350;
+        color: #172B4D;
+    }
+}
+
+.forgot-password {
+    font-family: "GothamBook", sans-serif;
+    font-size: 13px;
+    font-weight: 350;
+    color: #172B4D;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 25px;
+    p {
+        color: #fff;
+        font-family: "GothamBook", sans-serif;
+        font-size: 13px;
+        font-weight: 350;
+
+        a {
+            color: #11CDEF;
+            font-family: "GothamMedium", sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+        }
+    }
+}
+
+.agree-txt {
+    p {
+        font-family: "GothamBook", sans-serif;
+        font-size: 13px;
+        font-weight: 350;
+
+        a {
+            color: #11CDEF;
+        }
+    }
+}
+
+.register-input {
+
+    input {
+        color: #172B4D !important;
+        font-family: "GothamBook", sans-serif;
+        font-size: 16px;
+        font-weight: 350;
+        background-color: #fff;
+
+        &::placeholder {
+            color: #172B4D !important;
+            opacity: 0.8; /* Firefox */
+        }
+        
+        &:-ms-input-placeholder {
+            color: #172B4D;
+            opacity: 0.8; /* Firefox */
+        }
+        
+        &::-ms-input-placeholder { /* Microsoft Edge */
+            color: #172B4D;
+        }
+    }
+
+    & fieldset {
+        border-color: #fff !important;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0 ,0, 0, 0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+    }
+}
+
+.Mui-error {
+    fieldset {
+        &.MuiOutlinedInput-notchedOutline {
+            border-color: #d32f2f !important;
+        }
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #FFF inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
