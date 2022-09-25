@@ -1,0 +1,10 @@
+{
+  "signIn": {
+    "inputUserPlaceholder": "メールアドレスまたはユーザー名",
+    "inputPasswordPlaceholder": "パスワード",
+    "rememberMe": "情報を記憶する",
+    "forgotPassword": "パスワード再設定",
+    "btnSignIn": "ログイン",
+    "newToProduct": "まだアカウントをお持ちでない方はこちら"
+  }
+}

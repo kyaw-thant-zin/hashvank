@@ -1,0 +1,10 @@
+{
+    "signIn": {
+      "inputUserPlaceholder": "Username or email",
+      "inputPasswordPlaceholder": "Password",
+      "rememberMe": "Remember Me",
+      "forgotPassword": "Forgot password?",
+      "btnSignIn": "SIGN IN",
+      "newToProduct": "New to Product? Sign Up"
+    }
+}

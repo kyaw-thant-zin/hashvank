@@ -24,6 +24,9 @@ import LoadingComponent from '../../components/Loading';
 // SCSS
 import './common.scss';
 
+// LANG
+import { t } from '../../../common/SwitchLang';
+
 
 const SignIn = () => {
 
@@ -143,30 +146,30 @@ const SignIn = () => {
                                 <Stack spacing={2}>
                                     <FormGroup sx={theme.form.box}>
                                     <FormControl required className="login-input" sx={{ boxShadow: 2 }}>
-                                        <TextField  placeholder="Email or Username" type="text" name="id" error={checkId.error} value={id} onChange={onChange} required variant="outlined" size="small" InputProps={{ startAdornment: ( <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment> ) }} />
+                                        <TextField  placeholder={t('signIn.inputUserPlaceholder')} type="text" name="id" error={checkId.error} value={id} onChange={onChange} required variant="outlined" size="small" InputProps={{ startAdornment: ( <InputAdornment position="start"><EmailOutlinedIcon /></InputAdornment> ) }} />
                                     </FormControl>
                                     </FormGroup>
                                     <FormGroup sx={theme.form.box}>
                                     <FormControl required  className="login-input" sx={{ boxShadow: 2 }}>
-                                        <TextField  placeholder="Password" type="password" name="password" helperText={checkPassword.message} error={checkPassword.error} value={password} onChange={onChange} variant="outlined" size="small" InputProps={{ startAdornment: ( <InputAdornment position="start"><LockOutlinedIcon /></InputAdornment> ) }} />
+                                        <TextField  placeholder={t('signIn.inputPasswordPlaceholder')} type="password" name="password" helperText={checkPassword.message} error={checkPassword.error} value={password} onChange={onChange} variant="outlined" size="small" InputProps={{ startAdornment: ( <InputAdornment position="start"><LockOutlinedIcon /></InputAdornment> ) }} />
                                     </FormControl>
                                     </FormGroup>
                                     <Grid container alignItems="center" justifyContent="space-between">
                                     <Grid item>
                                         <Box sx={{ textAlign: 'right', marginTop: '5px' }}>
-                                        <FormControlLabel control={<Checkbox name="remember" checked={checked} onChange={handleChange} />} label="Remember Me" className="remember-me" />
+                                        <FormControlLabel control={<Checkbox name="remember" checked={checked} onChange={handleChange} />} label={t('signIn.rememberMe')} className="remember-me" />
                                         </Box>
                                     </Grid>
                                     <Grid item>
                                         <Box sx={{ textAlign: 'right', marginTop: '5px' }}>
                                         <Link to="/" className="forgot-password">
-                                            <Typography variant="caption">Forgot password?</Typography>
+                                            <Typography variant="caption">{t('signIn.forgotPassword')}</Typography>
                                         </Link>
                                         </Box>
                                     </Grid>
                                     </Grid>
                                     <Box sx={{ textAlign: 'center' }}>
-                                    <Button sx={theme.form.authButton} type="submit" variant="contained" size="large">Sign In</Button>
+                                    <Button sx={theme.form.authButton} type="submit" variant="contained" size="large">{t('signIn.btnSignIn')}</Button>
                                     </Box>
                                 </Stack>
                                 </form>
@@ -176,7 +179,7 @@ const SignIn = () => {
                         </Card>
                         <Box className="register-link">
                         <Typography>
-                            New to Product? <Link to="/sign-up">Sign Up</Link>
+                            <Link to="/sign-up">{t('signIn.newToProduct')}</Link>
                         </Typography>
                         </Box>
                     </Grid>

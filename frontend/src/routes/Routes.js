@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "../views/pages/common/SignIn";
 
 const PagesRoutes = () => {
+    
     return (
         <Router basename='/' >
             <Routes>
