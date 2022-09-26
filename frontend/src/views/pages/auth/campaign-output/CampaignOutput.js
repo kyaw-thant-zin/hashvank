@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 // MOMENT
 import moment from 'moment';
 
-// CORE-UI
+// THEME
 import Layout from '../../../layout/auth/Layout';
 import { theme } from "../../../layout/Theme";
 

@@ -88,5 +88,8 @@
       "tableView": "View",
       "tableLink": "Link",
       "tablePriority": "Priority"
+    },
+    "report": {
+      "pageTitle": "Report"
     }
 }

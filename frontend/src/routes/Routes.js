@@ -9,6 +9,7 @@ import Dashboard from "../views/pages/auth/dashboard/Dashboard";
 import Campaign from "../views/pages/auth/campaign/Campaign";
 import NewCampaign from "../views/pages/auth/campaign/new/NewCampaign";
 import CampaignOutput from '../views/pages/auth/campaign-output/CampaignOutput';
+import Report from "../views/pages/auth/report/Report";
 
 const PagesRoutes = () => {
     
@@ -27,6 +28,9 @@ const PagesRoutes = () => {
                 </Route>
                 <Route exact path='campaign-output'>
                   <Route exact path='/campaign-output' element={<CampaignOutput />} ></Route>
+                </Route>
+                <Route exact path='report'>
+                  <Route exact path='/report' element={<Report />} ></Route>
                 </Route>
 
 
