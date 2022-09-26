@@ -1,7 +1,7 @@
 import React from "react";
 
 // MUI
-import { Box, Button, Card, CardContent, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Stack, TextField, Typography, FormHelperText, Tooltip } from "@mui/material";
+import { Box, Button, Card, CardContent, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Stack, TextField, Typography, FormHelperText, Tooltip, Backdrop, CircularProgress } from "@mui/material";
 
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,9 +15,6 @@ import Validation from '../../../../common/FormValidation';
 // THEME
 import {theme} from "../../../layout/Theme";
 import Layout from '../../../layout/common/Layout';
-
-// CMPONENTS
-import LoadingComponent from '../../../components/Loading';
 
 // SCSS
 import '../common.scss';
@@ -42,8 +39,7 @@ const SignUp = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
   
-    // const { user, isLoaing, isError, isSuccess, message } = useSelector((state) => state.auth)
-    const { user, isLoaing, isError, isSuccess, message } = ''
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
   
     const [dataValidation, setDataValidation] = React.useState({
       isErrorFirstName: false,
@@ -196,13 +192,16 @@ const SignUp = () => {
   
     }
   
-    if(isLoaing) {
-      return <LoadingComponent />
-    }
-  
     return (
       <>
-        <Layout background="#263642">
+        {
+            isLoading ? (
+                <Backdrop open sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
+                        <CircularProgress />
+                    </Backdrop>
+            ) : ''
+        }
+        <Layout>
           <Grid container justifyContent='center'>
             <Grid item xs={10} sm={8} md={6} lg={4} xl={3}>
               <Card sx={{ background: '#F7FAFC', borderRadius: '10px' }}>

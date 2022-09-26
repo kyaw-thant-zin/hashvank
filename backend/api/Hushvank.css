@@ -1,0 +1,88 @@
+
+.hushvank-vd {
+    --gap: 12px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+}
+
+.hushvank-vd-wr {
+    position: relative;
+    overflow: hidden;
+    width: calc(100% / 4 - var(--gap));
+    margin: var(--gap) 0 0 var(--gap);
+}
+
+.hushvank-vd-wr video {
+    width: 100%;
+}
+
+.hushvank-vd-wr-info {
+    position: absolute;
+    bottom: 15px;
+    width: 100% !important;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s linear;
+    visibility: hidden;
+}
+
+.hushvank-vd-wr-info.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px);
+}
+
+.hushvank-vd-wr-info-list {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.hushvank-vd-wr-info-list-item a {
+    color: #000;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    text-decoration: none;
+    align-items: center;
+    width: 85%;
+    margin: 0px auto;
+    padding: 7px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.hushvank-vd-wr-info-list-item a figure {
+    margin: 0px;
+    width: 70px;
+    margin-right: 15px;
+}
+
+.hushvank-vd-wr-info-list-item a figure img {
+    margin: 0px;
+    width: 100%;
+}
+
+.hushvank-vd-wr-info-list-item-txt {
+    flex: 1;
+}
+
+.hushvank-vd-wr-info-list-item-txt h3,
+.hushvank-vd-wr-info-list-item-txt p {
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.15em;
+    margin: 0px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+
