@@ -9,6 +9,9 @@ import { useSelector, useDispatch } from 'react-redux';
 // ROUTER
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
+// SLICE
+import { signup, reset } from '../../../../features/auth/authSlice';
+
 // FORM VALIDATION
 import Validation from '../../../../common/FormValidation';
 
@@ -39,7 +42,28 @@ const SignUp = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
   
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+    const { isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+
+    React.useEffect(() => {
+    
+      if(isError) {
+        if(message?.error?.emailExists) {
+          serverSideValidationError('isErrorEmail', 'messageEmail', t('error.emailExists'))
+        }
+  
+        if(message?.error?.userNameExists) {
+          serverSideValidationError('isErrorUserName', 'messageUserName', t('error.userExists'))
+        }
+  
+      }
+
+      if(isSuccess) {
+        navigate('/sign-in')
+      }
+  
+      dispatch(reset())
+  
+    }, [isError, isSuccess])
   
     const [dataValidation, setDataValidation] = React.useState({
       isErrorFirstName: false,
@@ -132,7 +156,7 @@ const SignUp = () => {
           confirmPassword
         }
     
-        // dispatch(register(userData))
+        dispatch(signup(userData))
       }
     }
   

@@ -5,7 +5,9 @@
       "min": "Please enter at least 8 characters",
       "confirm": "The password confirmation does not match.",
       "agree": "Please agree with Terms & Conditions.",
-      "username": "Username can only include letters, numbers, underscores and periods."
+      "username": "Username can only include letters, numbers, underscores and periods.",
+      "emailExists": "The email is already in use.",
+      "userExists": "The Username has already been taken."
     },
     "signIn": {
       "inputUserPlaceholder": "Username or email",
