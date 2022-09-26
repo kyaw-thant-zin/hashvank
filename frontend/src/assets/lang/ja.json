@@ -66,6 +66,13 @@
     "tableAccount": "アカウント",
     "tableTags": "ハッシュタグ",
     "tableLinkType": "リンクタイプ",
-    "tablePublicPrivate": "公開設定"
+    "tablePublicPrivate": "公開設定",
+    "newNewCampaign": "新規作成",
+    "newCreate": "作る",
+    "newCampaignName": "キャンペーン名",
+    "newCollectionType": "コレクションの種類",
+    "newAccount": "アカウント",
+    "newHashtag": "ハッシュタグ",
+    "newLinkType": "リンクタイプ"
   }
 }

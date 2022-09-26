@@ -66,6 +66,13 @@
       "tableAccount": "Account",
       "tableTags": "Tags",
       "tableLinkType": "Link Type",
-      "tablePublicPrivate": "Public Private"
+      "tablePublicPrivate": "Public Private",
+      "newNewCampaign": "New Campaign",
+      "newCreate": "Create",
+      "newCampaignName": "Campaign Name",
+      "newCollectionType": "Collection Type",
+      "newAccount": "Account",
+      "newHashtag": "Hashtag",
+      "newLinkType": "Linktype"
     }
 }
