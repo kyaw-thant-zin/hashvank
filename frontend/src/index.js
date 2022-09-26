@@ -1,8 +1,17 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+
+// STORE
+import { persistor, store } from './app/store';
+import { injectStore } from './api/Api';
+import { PersistGate } from 'redux-persist/integration/react';
+
+//  MAIN APP
 import App from './App';
+
+
+
 import reportWebVitals from './reportWebVitals';
 
 
@@ -12,13 +21,16 @@ import { ThemeProvider } from '@mui/material';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+injectStore(store);
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );
