@@ -1,12 +1,14 @@
+import {t} from "./SwitchLang";
+
 
 const error = {
     message: {
-        require: 'This field is required.',
-        email: 'Please enter a valid email address',
-        min: 'Please enter at least 8 characters',
-        confirm: 'The password confirmation does not match.',
-        agree: 'Please agree with Terms & Coditions.',
-        username: 'Username can only include letters, numbers, underscores and periods.'
+        require: t('error.require'), 
+        email: t('error.email'),
+        min: t('error.min'),
+        confirm: t('error.confirm'),
+        agree: t('error.agree'),
+        username: t('error.username')
     }
 }
 

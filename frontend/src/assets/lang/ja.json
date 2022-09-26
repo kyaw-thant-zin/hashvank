@@ -1,4 +1,12 @@
 {
+  "error": {
+    "require": "この項目は必須です。",
+    "email": "有効なメールアドレスを入力してください",
+    "min": "8 文字以上で入力してください",
+    "confirm": "パスワード確認が一致しません。",
+    "agree": "利用規約に同意してください。",
+    "username": "ユーザー名には、文字、数字、アンダースコア、およびピリオドのみを含めることができます。"
+  },
   "signIn": {
     "inputUserPlaceholder": "メールアドレスまたはユーザー名",
     "inputPasswordPlaceholder": "パスワード",
@@ -9,15 +17,15 @@
   },
   "signUp": {
     "inputFirstNamePlaceholder": "名 *",
-    "inputLastNamePlaceholder": "Last Name *",
+    "inputLastNamePlaceholder": "姓 *",
     "inputTelPlaceholder": "Tel:",
-    "inputEmailPlaceholder": "Email *",
-    "inputUsernamePlaceholder": "Username *",
-    "inputPasswordPlaceholder": "Password *",
-    "inputConfirmPasswordPlaceholder": "Confirm Password *",
+    "inputEmailPlaceholder": "メールアドレス *",
+    "inputUsernamePlaceholder": "ユーザー名 *",
+    "inputPasswordPlaceholder": "パスワード *",
+    "inputConfirmPasswordPlaceholder": "パスワードを認証する *",
     "agreeWithTerms": "Agree With",
     "termsAndConditions": "Terms & Conditions",
-    "btnSignUp": "SIGN UP",
+    "btnSignUp": "サインアップ",
     "alreadyMember": "Already member?",
     "linkSignIn": "Sing In"
   },

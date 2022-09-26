@@ -1,4 +1,6 @@
 import React from "react";
+
+// MUI
 import { Box, Button, Card, CardContent, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Stack, TextField, Typography, FormHelperText, Tooltip } from "@mui/material";
 
 // REDUX
@@ -249,7 +251,7 @@ const SignUp = () => {
                           </FormGroup>
                           <FormGroup sx={theme.form.box}>
                             <FormControl  className="register-input">
-                              <TextField type="password" placeholder={t('signUp.inputConfirmEmailPlaceholder')} name="confirmPassword" error={isErrorConfirmPassword} helperText={messageConfirmPassword} value={confirmPassword} onChange={onChange} variant="outlined" size="small" />
+                              <TextField type="password" placeholder={t('signUp.inputConfirmPasswordPlaceholder')} name="confirmPassword" error={isErrorConfirmPassword} helperText={messageConfirmPassword} value={confirmPassword} onChange={onChange} variant="outlined" size="small" />
                             </FormControl> 
                           </FormGroup>
                           <Grid container alignItems="center">

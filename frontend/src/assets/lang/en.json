@@ -1,4 +1,12 @@
 {
+    "error": {
+      "require": "This field is required.",
+      "email": "Please enter a valid email address",
+      "min": "Please enter at least 8 characters",
+      "confirm": "The password confirmation does not match.",
+      "agree": "Please agree with Terms & Conditions.",
+      "username": "Username can only include letters, numbers, underscores and periods."
+    },
     "signIn": {
       "inputUserPlaceholder": "Username or email",
       "inputPasswordPlaceholder": "Password",
