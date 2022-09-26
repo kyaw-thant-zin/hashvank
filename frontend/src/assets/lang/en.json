@@ -109,5 +109,13 @@
       "inputImage": "Image URL",
       "inputTitle": "Title",
       "inputPage": "Page URL"
+    },
+    "inputCode": {
+      "pageTitle": "InputCode",
+      "tableTitle": "InputCode",
+      "tableName": "Campaign Name",
+      "tableLayoutType": "Layout Type",
+      "tableLayoutContent": "Layout Content",
+      "tableApiCode": "ApiCode (JS)"
     }
 }

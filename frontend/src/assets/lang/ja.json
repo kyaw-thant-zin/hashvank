@@ -110,5 +110,13 @@
     "inputImage": "画像URL",
     "inputTitle": "タイトル",
     "inputPage": "リンク先URL"
+  },
+  "inputCode": {
+    "pageTitle": "埋め込みコード",
+    "tableTitle": "埋め込みコード",
+    "tableName": "キャンペーン名",
+    "tableLayoutType": "レイアウトタイプ",
+    "tableLayoutContent": "表示内容",
+    "tableApiCode": "埋め込みコード"
   }
 }
