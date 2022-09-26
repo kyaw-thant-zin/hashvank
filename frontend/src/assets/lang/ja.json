@@ -91,5 +91,16 @@
   },
   "report": {
     "pageTitle": "レポート"
+  },
+  "linkSetting": {
+    "pageTitle": "リンク設定",
+    "tableTitle": "リンク設定",
+    "tableCampaign": "キャンペーン",
+    "tableHashtag": "ハッシュタグ",
+    "tableImage": "画像URL",
+    "tableTitleCol": "タイトル",
+    "tablePageURL": "リンク先URL",
+    "linkNewLinkSetting": "新規作成",
+    "btnCSVImport": "CSV アップロード"
   }
 }

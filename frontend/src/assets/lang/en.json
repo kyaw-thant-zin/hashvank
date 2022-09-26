@@ -91,5 +91,15 @@
     },
     "report": {
       "pageTitle": "Report"
+    },
+    "linkSetting": {
+      "pageTitle": "Link Setting",
+      "tableTitle": "Link Setting",
+      "tableCampaign": "Campaign",
+      "tableHashtag": "Hashtag",
+      "tableImage": "Image (URL)",
+      "tablePageURL": "Page URL",
+      "linkNewLinkSetting": "NEW LINK SETTING",
+      "btnCSVImport": "CSV IMPORT"
     }
 }
