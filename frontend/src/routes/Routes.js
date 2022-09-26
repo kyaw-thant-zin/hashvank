@@ -6,6 +6,7 @@ import SignIn from "../views/pages/common/sign/SignIn";
 import SignUp from "../views/pages/common/sign/SignUp";
 
 import Dashboard from "../views/pages/auth/dashboard/Dashboard";
+import Campaign from "../views/pages/auth/campaign/Campaign";
 
 const PagesRoutes = () => {
     
@@ -15,6 +16,9 @@ const PagesRoutes = () => {
                 {/* AUTH PAGES */}
                 <Route exact path='dashboard'>
                   <Route exact path='/dashboard/' element={<Dashboard />} ></Route>
+                </Route>
+                <Route exact path='campaign'>
+                  <Route exact path='/campaign/' element={<Campaign />} ></Route>
                 </Route>
 
 

@@ -160,7 +160,8 @@ const TableCop = (props) => {
 
   const dispatch = useDispatch()
 
-  const { campaignTablePagiPage } = useSelector((state) => state.campaign)
+  // const { campaignTablePagiPage } = useSelector((state) => state.campaign)
+  const { campaignTablePagiPage } = ''
 
   function CustomTablePagination() {
     const apiRef = useGridApiContext();
