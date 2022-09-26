@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
 
+// SLICE
+import { signin, reset } from '../../../../features/auth/authSlice';
+
 // ROUTER
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
@@ -44,8 +47,35 @@ const SignIn = () => {
 
     const {id, password} = formData;
 
-    // const { user, isLoaing, isError, isSuccess, message } = useSelector((state) => state.auth)
-    const { user, isLoaing, isError, isSuccess, message } = ''
+    const { user, isLoaing, isError, isSuccess, message } = useSelector((state) => state.auth)
+
+    React.useEffect(() => {
+    
+        if(isError) {
+          if(message?.error?.invalid) {
+            serverSideValidationError('checkId', message.error.invalid)
+          }
+    
+          if(message?.error?.wrongPassword) {
+            serverSideValidationError('checkPassword', message.error.wrongPassword)
+          }
+    
+        }
+    
+        // SignIn success redirect to specific route or dashboard
+        if(isSuccess || user) {
+    
+          // check the remember me
+          // if(checked) {
+          //   localStorage.setItem('rememberMe', true)
+          // }
+    
+          location.state?.from ? navigate(location.state.from) : navigate('/dashboard')
+        }
+    
+        dispatch(reset())
+    
+    }, [user, isError, isSuccess])
 
     // Onchange rememberme switch
     const [checked, setChecked] = React.useState(false);
@@ -84,7 +114,7 @@ const SignIn = () => {
             password,
           }
       
-        //   dispatch(signin(userData))
+          dispatch(signin(userData))
         }
     
     }

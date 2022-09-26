@@ -3,6 +3,9 @@ import React from "react";
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
 
+// SLICE
+import { signout, reset } from "../../../features/auth/authSlice";
+
 // MUI
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, IconButton, Menu, Toolbar, MenuItem, Typography, Avatar, Grid  } from "@mui/material";
@@ -20,8 +23,7 @@ const Header = (props) => {
   
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const {user} = useSelector((state) => state.auth)
-    const {user} = ''
+    const {user} = useSelector((state) => state.auth)
   
     const handleOpenUserMenu = (event) => {
       setAnchorElUser(event.currentTarget);
@@ -38,8 +40,8 @@ const Header = (props) => {
   
     const onSignOut = () => {
       setAnchorElUser(null);
-    //   dispatch(signout())
-    //   dispatch(reset())
+      dispatch(signout())
+      dispatch(reset())
       navigate('/sign-in')
     }
   
