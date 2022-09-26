@@ -22,6 +22,9 @@ import CheckBoxGroupCop from "../../../../components/form/checkBoxGroup/CheckBox
 import InputCop from "../../../../components/form/InputCop";
 import SelectCop from "../../../../components/form/SelectCop";
 
+// LANG
+import { t } from '../../../../../common/SwitchLang';
+
 const NewCampaign = (props) => {
 
     const dispatch = useDispatch()
@@ -194,7 +197,7 @@ const NewCampaign = (props) => {
             ) : ''
         }
       <Layout>
-        <Typography variant="h2" sx={theme.typography.pageTitle}>{props.title}</Typography>
+        <Typography variant="h2" sx={theme.typography.pageTitle}>{t('linkSetting.pageTitle')}</Typography>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
             <Card sx={theme.card}>
 
@@ -205,7 +208,7 @@ const NewCampaign = (props) => {
                             variant="h3" 
                             sx={theme.typography.contentTitle}
                         >
-                        New Link Setting
+                        {t('linkSetting.pageTitleNew')}
                         </Typography>
                     }
                     action={ 
@@ -214,7 +217,7 @@ const NewCampaign = (props) => {
                                 variant="outlined"
                                 sx={theme.button.contentHeader}
                             >
-                            Create
+                            {t('linkSetting.newCreate')}
                         </Button>
                     }
                 />
@@ -242,10 +245,10 @@ const NewCampaign = (props) => {
                                                 ) : ''
                                             }
                                         </RadioGroup>
-                                        <InputCop name="hashtag" value={hashtag} onChange={handleFormDataChange} placeholder="Hashtag" required="required" />
-                                        <InputCop name="imageUrl" value={imageUrl} onChange={handleFormDataChange} placeholder="Image URL" required="required" />
-                                        <InputCop name="title" value={title} onChange={handleFormDataChange} placeholder="Title" required="required" />
-                                        <InputCop name="pageUrl" value={pageUrl} onChange={handleFormDataChange} placeholder="PageURL" required="required" />
+                                        <InputCop name="hashtag" value={hashtag} onChange={handleFormDataChange} placeholder={t('linkSetting.inputHashtag')} required="required" />
+                                        <InputCop name="imageUrl" value={imageUrl} onChange={handleFormDataChange} placeholder={t('linkSetting.inputImage')} required="required" />
+                                        <InputCop name="title" value={title} onChange={handleFormDataChange} placeholder={t('linkSetting.inputTitle')} required="required" />
+                                        <InputCop name="pageUrl" value={pageUrl} onChange={handleFormDataChange} placeholder={t('linkSetting.inputPage')} required="required" />
                                     </Stack>
                                 </form>
                             </Grid>

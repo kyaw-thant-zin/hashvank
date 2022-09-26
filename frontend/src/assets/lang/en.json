@@ -51,7 +51,9 @@
       "isonorbefore": "is on or before",
       "isempty": "is empty",
       "isnotempty": "is not empty",
-      "isanyof": "is any of"
+      "isanyof": "is any of",
+      "edit": "Edit",
+      "delete": "Delete"
     },
     "home": {
       "pageTitle": "Home"
@@ -100,6 +102,12 @@
       "tableImage": "Image (URL)",
       "tablePageURL": "Page URL",
       "linkNewLinkSetting": "NEW LINK SETTING",
-      "btnCSVImport": "CSV IMPORT"
+      "btnCSVImport": "CSV IMPORT",
+      "pageTitleNew": "New Link Setting",
+      "newCreate": "Create",
+      "inputHashtag": "Hashtag",
+      "inputImage": "Image URL",
+      "inputTitle": "Title",
+      "inputPage": "Page URL"
     }
 }

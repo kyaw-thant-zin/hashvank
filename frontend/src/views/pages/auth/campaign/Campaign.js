@@ -114,8 +114,8 @@ const Campaign = (props) => {
             { field: 'linkType', headerName: t('campaign.tableLinkType'),flex: 1, minWidth: 100 },
             { field: 'visibility', type: 'boolean', headerName: t('campaign.tablePublicPrivate'), minWidth: 150, renderCell: (params) => <SwitchCop onChange={handleChangeVisibility} checked={params.row.visibility} value={params.row.id} />},
             { field: 'actions', type: 'actions', width: 50, getActions: (params) => [ 
-                <GridActionsCellItem label="Edit" showInMenu onClick={toggleAdmin(params.id, 'edit')} sx={{ fontFamily: '"GothamMedium", sans-serif', fontSize: '10px' }} />,
-                <GridActionsCellItem label="Delete" showInMenu onClick={toggleAdmin(params.id, 'delete')} sx={{ fontFamily: '"GothamMedium", sans-serif', fontSize: '10px' }} />,
+                <GridActionsCellItem label={t('table.edit')} showInMenu onClick={toggleAdmin(params.id, 'edit')} sx={{ fontFamily: '"GothamMedium", sans-serif', fontSize: '10px' }} />,
+                <GridActionsCellItem label={t('table.delete')} showInMenu onClick={toggleAdmin(params.id, 'delete')} sx={{ fontFamily: '"GothamMedium", sans-serif', fontSize: '10px' }} />,
             ] },
     
         ],

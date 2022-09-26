@@ -51,7 +51,9 @@
     "isonorbefore": "オンまたはそれ以前",
     "isempty": "空です",
     "isnotempty": "空ではありません",
-    "isanyof": "のいずれかです"
+    "isanyof": "のいずれかです",
+    "edit": "編集",
+    "delete": "削除"
   },
   "home": {
     "pageTitle": "ホーム"
@@ -101,6 +103,12 @@
     "tableTitleCol": "タイトル",
     "tablePageURL": "リンク先URL",
     "linkNewLinkSetting": "新規作成",
-    "btnCSVImport": "CSV アップロード"
+    "btnCSVImport": "CSV アップロード",
+    "pageTitleNew": "リンク設定",
+    "newCreate": "作る",
+    "inputHashtag": "ハッシュタグ",
+    "inputImage": "画像URL",
+    "inputTitle": "タイトル",
+    "inputPage": "リンク先URL"
   }
 }
