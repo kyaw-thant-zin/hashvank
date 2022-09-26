@@ -20,5 +20,14 @@
       "btnSignUp": "SIGN UP",
       "alreadyMember": "Already member?",
       "linkSignIn": "Sing In"
+    },
+    "nav": {
+      "home": "Home",
+      "campaign": "Campaign",
+      "campaignOutput": "Campaign Output",
+      "report": "Report",
+      "linkSetting": "Link Setting",
+      "inputCode": "InputCode",
+      "setting": "Setting"
     }
 }

@@ -19,10 +19,13 @@ import {theme} from "../Theme";
 // SCSS
 import './authLayout.scss';
 
+// LANG
+import { t } from '../../../common/SwitchLang';
+
 const SideBar = (props) => {
 
     const routes = ['/dashboard', '/campaign', '/campaign-output', '/report', '/link-setting', '/input-code', '/setting'];
-    const menuList = ['Home', 'Campaign', 'Campaign Output', 'Report', 'Link Setting', 'InputCode', 'Setting'];
+    const menuList = [t('nav.home'), t('nav.campaign'), t('nav.campaignOutput'), t('nav.report'), t('nav.linkSetting'), t('nav.inputCode'), t('nav.setting')];
     const iconList = [
       <HomeOutlinedIcon sx={{ color: '#7764E4', fontSize: 26 }} />, 
       <MailOutlinedIcon sx={{ color: '#F53C56' }} />, 

@@ -20,5 +20,14 @@
     "btnSignUp": "SIGN UP",
     "alreadyMember": "Already member?",
     "linkSignIn": "Sing In"
+  },
+  "nav": {
+    "home": "ホーム",
+    "campaign": "キャンペーン",
+    "campaignOutput": "表示設定",
+    "report": "レポート",
+    "linkSetting": "リンク設定",
+    "inputCode": "埋め込みコード",
+    "setting": "全般設定"
   }
 }
