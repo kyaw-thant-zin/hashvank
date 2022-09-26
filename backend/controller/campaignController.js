@@ -62,31 +62,33 @@ const store = asyncHnadler( async (req, res) => {
     const campaignData = {
         campaignName: campaignName,
         account: account,
-        hashtag: hashtag,
+        hashtag: '#'+hashtag.replace('#', ''),
         collectionTypeId: collectionType,
         linkTypeId: linkType,
         visibility: 1,
         userId: userId
     }
 
-    const campaign = await Campaign.create(campaignData).then(campaigns => {
-        return campaigns.get({ plain: true })
-    })
+    // const campaign = await Campaign.create(campaignData).then(campaigns => {
+    //     return campaigns.get({ plain: true })
+    // })
 
-    if(campaign) {
+    // if(campaign) {
 
-        const result = await storeTikToksInAllTables(campaign)
+    //     const result = await storeTikToksInAllTables(campaign)
 
-        if(result) {
-            res.status(201).send({success: {
-                stored: `The ${campaign.campaignName} was successfully created!`
-            }})
-        }
+    //     if(result) {
+    //         res.status(201).send({success: {
+    //             stored: `The ${campaign.campaignName} was successfully created!`
+    //         }})
+    //     }
 
-    } else {
-        res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
-        throw new Error('Invalid campaign data')
-    }
+    // } else {
+    //     res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
+    //     throw new Error('Invalid campaign data')
+    // }
+    console.log(campaignData)
+    res.send('test')
 })
 
 // @desc PUT campaigns

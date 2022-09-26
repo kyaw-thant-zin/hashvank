@@ -42,9 +42,9 @@ const privateApi = () => {
 
     const axiosInstance = axios.create({
         baseURL: baseURL,
-        // headers: {
-        //     Authorization: `Bearer ${token}`,
-        // },
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     })
 
     

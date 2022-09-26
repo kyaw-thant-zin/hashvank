@@ -9,6 +9,11 @@ import { useNavigate, Link } from "react-router-dom";
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
 
+// SLICE
+import { collectionTypeIndex } from '../../../../../features/collectionType/collectionTypeSlice';
+import { linkTypeIndex } from '../../../../../features/linkType/linkTypeSlice';
+import { store, reset } from "../../../../../features/campaign/CampaignSlice";
+
 // HELPER
 import Validation from '../../../../../common/FormValidation';
 
@@ -29,14 +34,55 @@ const NewCampaign = (props) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // const { collectionTypes } = useSelector((state) => state.collectionType)
-    const { collectionTypes } = ''
-    // const { linkTypes } = useSelector((state) => state.linkType)
-    const { linkTypes } = ''
-    // const { isCreated, isError, isLoading, message } = useSelector((state) => state.campaign)
-    const { isCreated, isError, isLoading, message } = ''
 
-    
+    const { collectionTypes } = useSelector((state) => state.collectionType)
+    const { linkTypes } = useSelector((state) => state.linkType)
+    const { isCreated, isError, isLoading, message } = useSelector((state) => state.campaign)
+
+    React.useEffect(() => {
+
+        // fectch the collection types
+        dispatch(collectionTypeIndex())
+
+        // fetch the link types
+        dispatch(linkTypeIndex())
+
+
+    }, [])
+
+    React.useEffect(() => {
+
+        if(isCreated) {
+            const timer = setTimeout(() => {
+                dispatch(reset())
+                resetForm()
+                navigate('/campaign')
+            }, 300);
+
+
+            return () => clearTimeout(timer);
+
+        }
+
+        if(isError) {
+            if(message?.error?.camapignExists) {
+                const value = {
+                    error: true,
+                    message: message?.error?.camapignExists
+                }
+                validateByEach('isErrorCampaignName', 'messageCampaignName', value)
+            }
+        }
+
+        const timerAll = setTimeout(() => {
+            dispatch(reset())
+        }, 1000);
+
+
+        return () => clearTimeout(timerAll);
+
+
+    }, [isCreated, isError])
 
     // change collectionType to menu items
     const collectionTypeMenuItems = []
@@ -180,7 +226,7 @@ const NewCampaign = (props) => {
         const validationRes = validateForm(campaignName, collectionType, account, hashtag, linkType)
         if(validationRes) {
             // store the campaign
-            // dispatch(store(formData))
+            dispatch(store(formData))
         }
 
 

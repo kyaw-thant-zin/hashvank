@@ -3,6 +3,9 @@ import React from "react";
 // REDUX
 import { useSelector, useDispatch } from "react-redux";
 
+// SLICE
+import { index, updateVisibility, destroy, reset } from "../../../../features/campaign/CampaignSlice";
+
 // MUI
 import { Button, Box, Card, CardHeader, Typography, CardContent, Backdrop, CircularProgress } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
@@ -30,11 +33,34 @@ const Campaign = (props) => {
 
     const dispatch = useDispatch()
 
-    // const { campaigns, isLoading, message, isUpdatedVisibility, isDeletedCampaign, isDeleteCampaingLoading } = useSelector((state) => state.campaign)
-    const { campaigns, isLoading, message, isUpdatedVisibility, isDeletedCampaign, isDeleteCampaingLoading } = ''
+    const { campaigns, isLoading, isSuccess, isError, message } = useSelector((state) => state.campaign)
     const [tableRows, setTableRows] = React.useState([])
 
     // fetch the campaigns
+    React.useEffect(()=> {
+
+        dispatch(index())
+
+        if(campaigns) {
+            setTableRows(campaigns.map((campaign) => {
+                const row = { 
+                    id: campaign.id, 
+                    campaignName: campaign.campaignName, 
+                    createTimestamp: moment(campaign.createTimestamp).format('DD/MM/YYYY'), 
+                    collectionType: campaign.collectionType?.type, 
+                    account: campaign.account ? campaign.account : '-', 
+                    hashtag: campaign.hashtag ? campaign.hashtag : '-', 
+                    linkType: campaign.linkType?.type, 
+                    visibility: !campaign.visibility
+                }
+        
+                return row
+            }))
+        }
+
+        dispatch(reset)
+
+    }, [isSuccess])
 
     // set the table data
 
@@ -67,7 +93,7 @@ const Campaign = (props) => {
                 visibility: event.target.checked
             }
         }
-        // dispatch(updateVisibility(campaignData))
+        dispatch(updateVisibility(campaignData))
 
     }, [dispatch])
 
@@ -86,7 +112,7 @@ const Campaign = (props) => {
 
     const handleClickDelete = () => {
         if(campaignIdDelete !== '') {
-            // dispatch(destroy(campaignIdDelete))
+            dispatch(destroy(campaignIdDelete))
         }
     }
 
@@ -134,14 +160,8 @@ const Campaign = (props) => {
         }
         {
 
-            isUpdatedVisibility ? (
-                <AlertCop severity="success" open={isUpdatedVisibility} message={message?.success?.updatedVisibility} />
-            ) : ''
-        }
-        {
-
-            isDeletedCampaign ? (
-                <AlertCop severity="success" open={isDeletedCampaign} message={message?.success?.deleted} />
+            isSuccess ? (
+                <AlertCop severity="success" open={isSuccess} message={message?.success?.updatedVisibility || message?.success?.deleted} />
             ) : ''
         }
       <Layout>
@@ -184,8 +204,8 @@ const Campaign = (props) => {
         </Box>
         <DialogDeleteCop
             open={openDialoag} 
-            loading={isDeleteCampaingLoading}
-            success={isDeletedCampaign}
+            loading={isLoading}
+            success={isSuccess}
             handleClose={handleClickCloseDialog} 
             handleClickDelete={handleClickDelete}
         />
