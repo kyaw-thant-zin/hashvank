@@ -69,10 +69,24 @@
     "tablePublicPrivate": "公開設定",
     "newNewCampaign": "新規作成",
     "newCreate": "作る",
-    "newCampaignName": "キャンペーン名",
-    "newCollectionType": "コレクションの種類",
+    "newCampaignName": "キャンペーン作成",
+    "newCollectionType": "収集タイプ",
     "newAccount": "アカウント",
     "newHashtag": "ハッシュタグ",
     "newLinkType": "リンクタイプ"
+  },
+  "campaignOutput": {
+    "pageTitle": "表示設定",
+    "tableTitle": "表示設定",
+    "selectAllCampaign": "すべてのキャンペーン",
+    "tablePublicPrivate": "公開設定",
+    "tableName": "キャンペーン名",
+    "tableTikTok": "取得動画",
+    "tablePostDate": "投稿日",
+    "tableAccount": "アカウント",
+    "tableHashtag": "ハッシュタグ",
+    "tableView": "View",
+    "tableLink": "リンク",
+    "tablePriority": "優先"
   }
 }

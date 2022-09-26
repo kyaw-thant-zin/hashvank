@@ -269,7 +269,7 @@ const NewCampaign = (props) => {
             ) : ''
         }
       <Layout>
-        <Typography variant="h2" sx={theme.typography.pageTitle}>{props.title}</Typography>
+        <Typography variant="h2" sx={theme.typography.pageTitle}>{t('campaign.pageTitle')}</Typography>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
             <Card sx={theme.card}>
 

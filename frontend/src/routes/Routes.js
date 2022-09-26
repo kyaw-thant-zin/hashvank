@@ -8,6 +8,7 @@ import SignUp from "../views/pages/common/sign/SignUp";
 import Dashboard from "../views/pages/auth/dashboard/Dashboard";
 import Campaign from "../views/pages/auth/campaign/Campaign";
 import NewCampaign from "../views/pages/auth/campaign/new/NewCampaign";
+import CampaignOutput from '../views/pages/auth/campaign-output/CampaignOutput';
 
 const PagesRoutes = () => {
     
@@ -23,6 +24,9 @@ const PagesRoutes = () => {
                 </Route>
                 <Route exact path='campaign'>
                   <Route exact path='/campaign/create' element={<NewCampaign />} ></Route>
+                </Route>
+                <Route exact path='campaign-output'>
+                  <Route exact path='/campaign-output' element={<CampaignOutput />} ></Route>
                 </Route>
 
 

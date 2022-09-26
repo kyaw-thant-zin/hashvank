@@ -74,5 +74,19 @@
       "newAccount": "Account",
       "newHashtag": "Hashtag",
       "newLinkType": "Linktype"
+    },
+    "campaignOutput": {
+      "pageTitle": "Campaign Output",
+      "tableTitle": "Campaign Output",
+      "selectAllCampaign": "All Campaign",
+      "tablePublicPrivate": "Public Private",
+      "tableName": "Campaign Name",
+      "tableTikTok": "TikTok",
+      "tablePostDate": "Post Date",
+      "tableAccount": "Account",
+      "tableHashtag": "Hashtag",
+      "tableView": "View",
+      "tableLink": "Link",
+      "tablePriority": "Priority"
     }
 }
