@@ -13,6 +13,7 @@ import Report from "../views/pages/auth/report/Report";
 import LinkSetting from "../views/pages/auth/link-setting/LinkSetting";
 import NewLinkSetting from "../views/pages/auth/link-setting/new/NewLinkSetting";
 import InputCode from "../views/pages/auth/input-code/InputCode";
+import Setting from "../views/pages/auth/setting/Setting";
 
 const PagesRoutes = () => {
     
@@ -43,6 +44,9 @@ const PagesRoutes = () => {
                 </Route>
                 <Route exact path='input-code'>
                   <Route exact path='/input-code' element={<InputCode />} ></Route>
+                </Route>
+                <Route exact path='setting'>
+                  <Route exact path='/setting' element={<Setting />} ></Route>
                 </Route>
 
 

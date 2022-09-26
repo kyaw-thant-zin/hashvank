@@ -118,5 +118,8 @@
     "tableLayoutType": "レイアウトタイプ",
     "tableLayoutContent": "表示内容",
     "tableApiCode": "埋め込みコード"
+  },
+  "setting": {
+    "pageTitle": "全般設定"
   }
 }
