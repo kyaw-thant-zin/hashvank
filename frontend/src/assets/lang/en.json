@@ -28,7 +28,9 @@
       "report": "Report",
       "linkSetting": "Link Setting",
       "inputCode": "InputCode",
-      "setting": "Setting"
+      "setting": "Setting",
+      "profile": "Profile",
+      "signOut": "Sign out"
     },
     "table": {
       "filters": "Filters",

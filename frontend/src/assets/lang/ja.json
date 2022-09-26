@@ -28,7 +28,9 @@
     "report": "レポート",
     "linkSetting": "リンク設定",
     "inputCode": "埋め込みコード",
-    "setting": "全般設定"
+    "setting": "全般設定",
+    "profile": "プロフィール",
+    "signOut": "サインアウト"
   },
   "table": {
     "filters": "フィルター",

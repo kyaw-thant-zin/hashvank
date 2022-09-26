@@ -10,6 +10,9 @@ import { AppBar, Box, IconButton, Menu, Toolbar, MenuItem, Typography, Avatar, G
 // ROUTE
 import { useNavigate } from "react-router-dom";
 
+// LANG
+import { t } from "../../../common/SwitchLang";
+
 
 const Header = (props) => {
 
@@ -111,10 +114,10 @@ const Header = (props) => {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={navigateToProfile}>
-                    <Typography textAlign="center" >Profile</Typography>
+                    <Typography textAlign="center" >{t('nav.profile')}</Typography>
                   </MenuItem>
                   <MenuItem onClick={onSignOut}>
-                    <Typography textAlign="center" >Sign out</Typography>
+                    <Typography textAlign="center" >{t('nav.signOut')}</Typography>
                   </MenuItem>
                 </Menu>
               </Box>
