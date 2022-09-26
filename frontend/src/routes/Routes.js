@@ -11,6 +11,7 @@ import NewCampaign from "../views/pages/auth/campaign/new/NewCampaign";
 import CampaignOutput from '../views/pages/auth/campaign-output/CampaignOutput';
 import Report from "../views/pages/auth/report/Report";
 import LinkSetting from "../views/pages/auth/link-setting/LinkSetting";
+import NewLinkSetting from "../views/pages/auth/link-setting/new/NewLinkSetting";
 
 const PagesRoutes = () => {
     
@@ -35,6 +36,9 @@ const PagesRoutes = () => {
                 </Route>
                 <Route exact path='link-setting'>
                   <Route exact path='/link-setting/' element={<LinkSetting />} ></Route>
+                </Route>
+                <Route exact path='link-setting'>
+                  <Route exact path='/link-setting/create' element={<NewLinkSetting />} ></Route>
                 </Route>
 
 

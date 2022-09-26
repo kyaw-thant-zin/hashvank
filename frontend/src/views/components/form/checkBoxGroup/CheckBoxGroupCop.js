@@ -1,7 +1,7 @@
 import { Radio, FormControlLabel, FormGroup, Grid } from "@mui/material";
 import React from "react";
 
-import { theme } from "../../layout/Theme";
+import { theme } from "../../../layout/Theme";
 import VideoViewCop from "../../VideoViewCop";
 import './CheckBoxGroupCop.scss'
 
