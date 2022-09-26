@@ -10,6 +10,9 @@ import { Box, Card, CardActions, CardContent, Chip, Grid, Typography } from "@mu
 import {theme} from "../../../layout/Theme";
 import Layout from '../../../layout/auth/Layout';
 
+// LANG
+import { t } from '../../../../common/SwitchLang';
+
 const Dashboard = () => {
 
     const dispatch = useDispatch()
@@ -23,7 +26,7 @@ const Dashboard = () => {
     return (
       <>
         <Layout>
-          <Typography variant="h2" sx={theme.typography.pageTitle}>Home</Typography>
+          <Typography variant="h2" sx={theme.typography.pageTitle}>{ t('home.pageTitle') }</Typography>
             {
               campaignArray ? (
                 <Grid container spacing={2}>

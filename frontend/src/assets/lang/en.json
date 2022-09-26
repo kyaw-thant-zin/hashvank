@@ -29,5 +29,43 @@
       "linkSetting": "Link Setting",
       "inputCode": "InputCode",
       "setting": "Setting"
+    },
+    "table": {
+      "filters": "Filters",
+      "export": "Export",
+      "noRows": "No Rows...",
+      "downloadCSV": "Download as CSV",
+      "print": "Print",
+      "columns": "Columns",
+      "operator": "Operator",
+      "value": "Value",
+      "contains": "contains",
+      "equals": "equals",
+      "startsWith": "starts with",
+      "endsWith": "ends with",
+      "is": "is",
+      "isNot": "is not",
+      "isAfter": "is after",
+      "isonorafter": "is on or after",
+      "isbefore": "is before",
+      "isonorbefore": "is on or before",
+      "isempty": "is empty",
+      "isnotempty": "is not empty",
+      "isanyof": "is any of"
+    },
+    "home": {
+      "pageTitle": "Home"
+    },
+    "campaign": {
+      "pageTitle": "Campaign",
+      "tableTitle": "Campaign List",
+      "btnNewCampaign": "New Campaign",
+      "tableName": "Campaign Name",
+      "tableCreated": "Created",
+      "tableCollectionType": "Collection Type",
+      "tableAccount": "Account",
+      "tableTags": "Tags",
+      "tableLinkType": "Link Type",
+      "tablePublicPrivate": "Public Private"
     }
 }

@@ -29,5 +29,43 @@
     "linkSetting": "リンク設定",
     "inputCode": "埋め込みコード",
     "setting": "全般設定"
+  },
+  "table": {
+    "filters": "フィルター",
+    "export": "輸出",
+    "noRows": "空っぽ.....",
+    "downloadCSV": "CSVとしてダウンロード",
+    "print": "印刷する",
+    "columns": "カラム",
+    "operator": "演算子",
+    "value": "価値",
+    "contains": "含む",
+    "equals": "等しい",
+    "startsWith": "で始まる",
+    "endsWith": "で終わる",
+    "is": "は",
+    "isNot": "ではない",
+    "isAfter": "後です",
+    "isonorafter": "以降です",
+    "isbefore": "前です",
+    "isonorbefore": "オンまたはそれ以前",
+    "isempty": "空です",
+    "isnotempty": "空ではありません",
+    "isanyof": "のいずれかです"
+  },
+  "home": {
+    "pageTitle": "ホーム"
+  },
+  "campaign": {
+    "pageTitle": "キャンペーン",
+    "tableTitle": "キャンペーン一覧",
+    "btnNewCampaign": "新規作成",
+    "tableName": "キャンペーン名",
+    "tableCreated": "作成日",
+    "tableCollectionType": "収集タイプ",
+    "tableAccount": "アカウント",
+    "tableTags": "ハッシュタグ",
+    "tableLinkType": "リンクタイプ",
+    "tablePublicPrivate": "公開設定"
   }
 }

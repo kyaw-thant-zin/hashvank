@@ -23,6 +23,9 @@ import SwitchCop from "../../../components/table/SwitchCop";
 import DialogDeleteCop from "../../../components/DialogDeleteCop";
 import AlertCop from "../../../components/AlertCop";
 
+// LANG
+import { t } from '../../../../common/SwitchLang';
+
 const Campaign = (props) => {
 
     const dispatch = useDispatch()
@@ -103,13 +106,13 @@ const Campaign = (props) => {
     const columns = React.useMemo(
         () => [
             {field: 'id'},
-            { field: 'campaignName', headerName: 'Campaign Name', flex: 1, minWidth: 100, renderCell: (params) => <Typography variant="subtitle" sx={{ fontFamily: '"GothamBold", sans-serif', fontWeight: 'bold' }}>{params.row.campaignName}</Typography> },
-            { field: 'createTimestamp', headerName: 'Created',flex: 1, minWidth: 100 },
-            { field: 'collectionType', headerName: 'Collection Type',flex: 1, minWidth: 150 },
-            { field: 'account', headerName: 'Account',flex: 1, minWidth: 100 },
-            { field: 'hashtag', headerName: 'Tags',flex: 1, minWidth: 70 },
-            { field: 'linkType', headerName: 'Link Type',flex: 1, minWidth: 100 },
-            { field: 'visibility', type: 'boolean', headerName: 'Public Private', minWidth: 150, renderCell: (params) => <SwitchCop onChange={handleChangeVisibility} checked={params.row.visibility} value={params.row.id} />},
+            { field: 'campaignName', headerName: t('campaign.tableName'), flex: 1, minWidth: 100, renderCell: (params) => <Typography variant="subtitle" sx={{ fontFamily: '"GothamBold", sans-serif', fontWeight: 'bold' }}>{params.row.campaignName}</Typography> },
+            { field: 'createTimestamp', headerName: t('campaign.tableCreated'),flex: 1, minWidth: 100 },
+            { field: 'collectionType', headerName: t('campaign.tableCollectionType'),flex: 1, minWidth: 150 },
+            { field: 'account', headerName: t('campaign.tableAccount'),flex: 1, minWidth: 100 },
+            { field: 'hashtag', headerName: t('campaign.tableTags'),flex: 1, minWidth: 70 },
+            { field: 'linkType', headerName: t('campaign.tableLinkType'),flex: 1, minWidth: 100 },
+            { field: 'visibility', type: 'boolean', headerName: t('campaign.tablePublicPrivate'), minWidth: 150, renderCell: (params) => <SwitchCop onChange={handleChangeVisibility} checked={params.row.visibility} value={params.row.id} />},
             { field: 'actions', type: 'actions', width: 50, getActions: (params) => [ 
                 <GridActionsCellItem label="Edit" showInMenu onClick={toggleAdmin(params.id, 'edit')} sx={{ fontFamily: '"GothamMedium", sans-serif', fontSize: '10px' }} />,
                 <GridActionsCellItem label="Delete" showInMenu onClick={toggleAdmin(params.id, 'delete')} sx={{ fontFamily: '"GothamMedium", sans-serif', fontSize: '10px' }} />,
@@ -142,7 +145,7 @@ const Campaign = (props) => {
             ) : ''
         }
       <Layout>
-        <Typography variant="h2" sx={theme.typography.pageTitle}>{props.title}</Typography>
+        <Typography variant="h2" sx={theme.typography.pageTitle}>{t('campaign.pageTitle')}</Typography>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
             <Card sx={theme.card}>
 
@@ -153,7 +156,7 @@ const Campaign = (props) => {
                             variant="h3" 
                             sx={theme.typography.contentTitle}
                         >
-                        Campaing List
+                        {t('campaign.tableTitle')}
                         </Typography>
                     }
                     action={ 
@@ -162,7 +165,7 @@ const Campaign = (props) => {
                                 variant="outlined"
                                 sx={theme.button.contentHeader}
                             >
-                            New Campaign
+                            {t('campaign.btnNewCampaign')}
                             </Button>
                         </Link>
                     }

@@ -23,6 +23,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // REDUX
 import { useSelector, useDispatch } from "react-redux"
 
+// LANG
+import { t } from "../../../common/SwitchLang";
+
 
 export function SortedDescendingIcon() {
   return <ExpandMoreIcon className="icon" />;
@@ -144,6 +147,30 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   
 }));
 
+const localizedTextsMap = {
+  toolbarFilters: t('table.filters'),
+  toolbarExport: t('table.export'),
+  noRowsLabel: t('table.noRows'),
+  toolbarExportCSV: t('table.downloadCSV'),
+  toolbarExportPrint: t('table.print'),
+  filterPanelColumns: t('table.columns'),
+  filterPanelOperators: t('table.operator'),
+  filterPanelInputLabel: t('table.value'),
+  filterOperatorContains: t('table.contains'),
+  filterOperatorEquals: t('table.equals'),
+  filterOperatorStartsWith: t('table.startsWith'),
+  filterOperatorEndsWith: t('table.endsWith'),
+  filterOperatorIs: t('table.is'),
+  filterOperatorNot: t('table.isNot'),
+  filterOperatorAfter: t('table.isAfter'),
+  filterOperatorOnOrAfter: t('table.isonorafter'),
+  filterOperatorBefore: t('table.isbefore'),
+  filterOperatorOnOrBefore: t('table.isonorbefore'),
+  filterOperatorIsEmpty: t('table.isempty'),
+  filterOperatorIsNotEmpty: t('table.isnotempty'),
+  filterOperatorIsAnyOf: t('table.isanyof'),
+};
+
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -225,6 +252,7 @@ const TableCop = (props) => {
         filterModel={props.filterModel}
         processRowUpdate={props.processRowUpdate}
         experimentalFeatures={props.experimentalFeatures}
+        localeText={localizedTextsMap}
         />
     </Box>
   )
