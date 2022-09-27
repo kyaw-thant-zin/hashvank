@@ -40,10 +40,63 @@ const searchByHashtagandUpdateLayoutType = asyncHnadler( async(campaign) => {
 const searchByHashtagAndUpdate = asyncHnadler( async(campaign) => {
 
     const tiktokInfoIds = campaign.tiktokInfos.map((tInfo) => {
-        return tInfo.id
+        if(tInfo.campaign.collectionTypeId === 2) {
+            return tInfo.id
+        }
     })
 
     const tiktoks = await getTikToksWithHastag(campaign.hashtag, campaign.apiSetting.layoutType)
+    if(tiktoks.length > 0) {
+        const tiktokInfoDataBeforeSort = bulkCreateTikToks(tiktoks, 'updateSchedule', tiktokInfoIds, campaign.id)
+        if(tiktokInfoDataBeforeSort) {
+            const infos = await TiktokInfo.bulkCreate(tiktokInfoDataBeforeSort, { updateOnDuplicate: [ 'videoId', 'account', 'hashtag', 'views', 'heart', 'comments', 'share', 'videoUrl', 'webVideoUrl', 'expiresIn',  ] })
+                            .then(infos => {
+                                console.log('updated')
+                                return infos
+                            })
+            if(infos) {
+                return true
+            }
+        }
+    }
+
+})
+
+const searchByAccountandUpdateLayoutType = asyncHnadler( async(campaign) => {
+
+    // compare layout type
+    const defaultTiktokCount = campaign.tiktokInfos.length
+    const newTiktokCount = campaign.apiSetting.layoutType
+
+    if(newTiktokCount > defaultTiktokCount) {
+        const tiktoks = await getTikToksWithAccount(campaign.account, campaign.apiSetting.layoutType)
+        if(tiktoks.length > 0) {
+
+            let removedOldTikToks = []
+            tiktoks.forEach((tiktok, index) => {
+                if(index > defaultTiktokCount - 1) {
+                    removedOldTikToks.push(tiktok)
+                } 
+            })
+
+            const tiktokInfoDataBeforeSort = bulkCreateTikToks(removedOldTikToks, 'create', [], campaign.id)
+            if(tiktokInfoDataBeforeSort) {
+                const created = await TiktokInfo.bulkCreate(tiktokInfoDataBeforeSort)
+                return created
+            }
+        }
+    }
+})
+
+const searchByAccountAndUpdate = asyncHnadler( async(campaign) => {
+
+    const tiktokInfoIds = campaign.tiktokInfos.map((tInfo) => {
+        if(tInfo.campaign.collectionTypeId === 1) {
+            return tInfo.id
+        }
+    })
+
+    const tiktoks = await getTikToksWithAccount(campaign.account, campaign.apiSetting.layoutType)
     if(tiktoks.length > 0) {
         const tiktokInfoDataBeforeSort = bulkCreateTikToks(tiktoks, 'updateSchedule', tiktokInfoIds, campaign.id)
         if(tiktokInfoDataBeforeSort) {
@@ -75,6 +128,7 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
             
             if(campaign.collectionTypeId === 1) {
                 // search by account and update
+                searchByAccountAndUpdate(campaign)
             } else {
                 // search by hashtag and update
                 searchByHashtagAndUpdate(campaign)
@@ -326,5 +380,6 @@ const updateTiktoksBySchedule = () => {
 module.exports = {
     storeTikToksInAllTables,
     updateTiktoksBySchedule,
-    searchByHashtagandUpdateLayoutType
+    searchByHashtagandUpdateLayoutType,
+    searchByAccountandUpdateLayoutType
 }
