@@ -9,6 +9,12 @@
     "emailExists": "メールは既に使用されています。",
     "userExists": "ユーザー名は既に使用されています。"
   },
+  "message": {
+    "campaignStored": "新しいキャンペーンは正常に作成されました！",
+    "campaignUpdatePrivate": "キャンペーンは非公開になりました！",
+    "campaignUpdatePublic": "キャンペーンは公開されました！",
+    "campaignDestroy": "キャンペーンは正常に削除されました！"
+  },
   "signIn": {
     "inputUserPlaceholder": "メールアドレスまたはユーザー名",
     "inputPasswordPlaceholder": "パスワード",

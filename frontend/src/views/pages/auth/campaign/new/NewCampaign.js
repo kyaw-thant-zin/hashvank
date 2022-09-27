@@ -37,7 +37,7 @@ const NewCampaign = (props) => {
 
     const { collectionTypes } = useSelector((state) => state.collectionType)
     const { linkTypes } = useSelector((state) => state.linkType)
-    const { isCreated, isError, isLoading, message } = useSelector((state) => state.campaign)
+    const { isStored, isError, isLoading, message } = useSelector((state) => state.campaign)
 
     React.useEffect(() => {
 
@@ -52,16 +52,9 @@ const NewCampaign = (props) => {
 
     React.useEffect(() => {
 
-        if(isCreated) {
-            const timer = setTimeout(() => {
-                dispatch(reset())
-                resetForm()
-                navigate('/campaign')
-            }, 300);
-
-
-            return () => clearTimeout(timer);
-
+        if(isStored) {
+            resetForm()
+            navigate('/campaign')
         }
 
         if(isError) {
@@ -82,7 +75,7 @@ const NewCampaign = (props) => {
         return () => clearTimeout(timerAll);
 
 
-    }, [isCreated, isError])
+    }, [isStored, isError])
 
     // change collectionType to menu items
     const collectionTypeMenuItems = []
@@ -300,12 +293,6 @@ const NewCampaign = (props) => {
                 <Backdrop open sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} >
                         <CircularProgress />
                     </Backdrop>
-            ) : ''
-        }
-        {
-
-            isCreated ? (
-                <AlertCop severity="success" open={isCreated} message={message?.success?.stored} />
             ) : ''
         }
         {

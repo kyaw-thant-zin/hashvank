@@ -10,8 +10,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 //  MAIN APP
 import App from './App';
 
-
-
 import reportWebVitals from './reportWebVitals';
 
 

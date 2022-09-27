@@ -9,6 +9,12 @@
       "emailExists": "The email is already in use.",
       "userExists": "The Username has already been taken."
     },
+    "message": {
+      "campaignStored": "The new campaign was successfully created!",
+      "campaignUpdatePrivate": "The campaign was set to private!",
+      "campaignUpdatePublic": "The campaign was set to public!",
+      "campaignDestroy": "The campaign was successfully deleted!"
+    },
     "signIn": {
       "inputUserPlaceholder": "Username or email",
       "inputPasswordPlaceholder": "Password",

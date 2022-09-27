@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import RouteRequiresLogin from './RouteRequiresLogin';
+
 // PAGES
 import SignIn from "../views/pages/common/sign/SignIn";
 import SignUp from "../views/pages/common/sign/SignUp";
@@ -21,31 +23,31 @@ const PagesRoutes = () => {
         <Router basename='/' >
             <Routes>
                 {/* AUTH PAGES */}
-                <Route exact path='dashboard'>
+                <Route exact path='dashboard' element={<RouteRequiresLogin />}>
                   <Route exact path='/dashboard/' element={<Dashboard />} ></Route>
                 </Route>
-                <Route exact path='campaign'>
+                <Route exact path='campaign' element={<RouteRequiresLogin />}>
                   <Route exact path='/campaign/' element={<Campaign />} ></Route>
                 </Route>
-                <Route exact path='campaign'>
+                <Route exact path='campaign' element={<RouteRequiresLogin />}>
                   <Route exact path='/campaign/create' element={<NewCampaign />} ></Route>
                 </Route>
-                <Route exact path='campaign-output'>
+                <Route exact path='campaign-output' element={<RouteRequiresLogin />}>
                   <Route exact path='/campaign-output' element={<CampaignOutput />} ></Route>
                 </Route>
-                <Route exact path='report'>
+                <Route exact path='report' element={<RouteRequiresLogin />}>
                   <Route exact path='/report' element={<Report />} ></Route>
                 </Route>
-                <Route exact path='link-setting'>
+                <Route exact path='link-setting' element={<RouteRequiresLogin />}>
                   <Route exact path='/link-setting/' element={<LinkSetting />} ></Route>
                 </Route>
-                <Route exact path='link-setting'>
+                <Route exact path='link-setting' element={<RouteRequiresLogin />}>
                   <Route exact path='/link-setting/create' element={<NewLinkSetting />} ></Route>
                 </Route>
-                <Route exact path='input-code'>
+                <Route exact path='input-code' element={<RouteRequiresLogin />}>
                   <Route exact path='/input-code' element={<InputCode />} ></Route>
                 </Route>
-                <Route exact path='setting'>
+                <Route exact path='setting' element={<RouteRequiresLogin />}>
                   <Route exact path='/setting' element={<Setting />} ></Route>
                 </Route>
 

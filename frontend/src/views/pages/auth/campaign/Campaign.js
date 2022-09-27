@@ -11,7 +11,7 @@ import { Button, Box, Card, CardHeader, Typography, CardContent, Backdrop, Circu
 import { GridActionsCellItem } from "@mui/x-data-grid";
 
 // ROUTER
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // MOMENT JS
 import moment from 'moment';
@@ -32,15 +32,20 @@ import { t } from '../../../../common/SwitchLang';
 const Campaign = (props) => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const { campaigns, isLoading, isSuccess, isError, message } = useSelector((state) => state.campaign)
+    const { campaigns, isLoading, isSuccess, isStored, isUpdated, isDestroy, isError, message } = useSelector((state) => state.campaign)
     const [tableRows, setTableRows] = React.useState([])
 
     // fetch the campaigns
     React.useEffect(()=> {
-
         dispatch(index())
+    }, [navigate, isDestroy])
 
+    // set the table data
+    React.useEffect(() => {
+
+        
         if(campaigns) {
             setTableRows(campaigns.map((campaign) => {
                 const row = { 
@@ -58,11 +63,24 @@ const Campaign = (props) => {
             }))
         }
 
-        dispatch(reset)
+    }, [campaigns])
 
-    }, [isSuccess])
+    // reset the messages
+    React.useEffect(() => {
+        
+        if(isDestroy) {
+            setCampaignIdDelete('')
+            handleClickCloseDialog()
+        }
 
-    // set the table data
+        const timerAll = setTimeout(() => {
+            dispatch(reset())
+        }, 1000);
+
+        return () => clearTimeout(timerAll)
+
+
+    }, [isStored, isUpdated, isError, isDestroy])
 
     // handle change the public and private
     const handleChangeVisibility = React.useCallback((event) => {
@@ -160,8 +178,20 @@ const Campaign = (props) => {
         }
         {
 
-            isSuccess ? (
-                <AlertCop severity="success" open={isSuccess} message={message?.success?.updatedVisibility || message?.success?.deleted} />
+            isUpdated ? (
+                <AlertCop severity="success" open={isUpdated} message={t('message.campaignUpdate'+message?.success?.updatedVisibility)} />
+            ) : ''
+        }
+        {
+
+            isStored ? (
+                <AlertCop severity="success" open={isStored} message={t('message.campaignStored')} />
+            ) : ''
+        },
+        {
+
+            isDestroy ? (
+                <AlertCop severity="success" open={isDestroy} message={t('message.campaignDestroy')} />
             ) : ''
         }
       <Layout>
@@ -205,7 +235,7 @@ const Campaign = (props) => {
         <DialogDeleteCop
             open={openDialoag} 
             loading={isLoading}
-            success={isSuccess}
+            success={isDestroy}
             handleClose={handleClickCloseDialog} 
             handleClickDelete={handleClickDelete}
         />

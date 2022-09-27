@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const moment = require('moment')
 const later = require('@breejs/later')
 
-const { getTikTokByHashtag } = require('../helpers/tiktokScraper')
+const { getTikTokByHashtag, getTikTokByAccount } = require('../helpers/tiktokScraper')
 
 const Campaign = db.campaigns
 const TiktokInfo = db.tiktokInfos
@@ -113,41 +113,34 @@ const getTikToksWithHastag = async (hashtag, tiktokCount) => {
     })
 }
 
-const getTikToksWithAccount = asyncHnadler( async (account, tiktokCount) => {
+const getTikToksWithAccount = async (account, tiktokCount) => {
 
-    const tiktok_account_name = account.replace('@', '');
+    
+    return new Promise( async(resovle, reject) => {
+        const tiktok_account_name = account.replace('@', '');
 
-    try {
-        const posts = await TikTokScraper.hashtag( tiktok_account_name, {
-            number: tiktokCount, 
-            sessionList: [
-                "sid_tt="+process.env.TIKTOK_SID_TT_1+";",
-                "sid_tt="+process.env.TIKTOK_SID_TT_2+";", 
-                "sid_tt="+process.env.TIKTOK_SID_TT_3+";", 
-            ],
-        }).then(posts => {
-            console.log(posts.collector)
-            return posts
-        })
+        try {
 
+            const posts = await getTikTokByAccount(tiktok_account_name, {
+                number: tiktokCount
+            })
+            
+            if(posts.collector?.length > 0) {
+                resovle(posts.collector)
 
-        if(posts.collector?.length > 0) {
-            return posts.collector
-
-        }else {
-            return false
+            }else {
+                reject(false)
+            }
+            
+        } catch (error) {
+            reject(false)
         }
 
-    } catch (error) {
-        if(error) {
-            console.log(error)
-            return false
-        }
-    }
+        reject(false)
+    })
+    
 
-    return false
-
-})
+}
 
 function sortByViews( a, b ) {
     if ( Number(a.views) < Number(b.views) ){
@@ -211,6 +204,7 @@ const storeDataInAllRequiredTables = asyncHnadler( async (tiktoks, campaignId, c
 
 // create an array for create or update tiktokInfos
 const bulkCreateTikToks = (tiktoks, state, tiktokInfoIds, campaignId) => {
+
     const tiktokBulkCreateRows = tiktoks.map((tiktok, index) => {
 
         const videoUrl = new URL( tiktok.videoUrl )
@@ -291,7 +285,7 @@ const storeTikToksInAllTables = async (campaignCreated) => {
             }
         })
     
-        let tiktokCount = process.env.TIKTOK_LAYOUT_COUNT || 10
+        let tiktokCount = process.env.TIKTOK_LAYOUT_COUNT || 12
     
         const apiSetting = await ApiSetting.findOne({
             where: {
@@ -306,7 +300,9 @@ const storeTikToksInAllTables = async (campaignCreated) => {
         if(campaign.collectionTypeId === 1) { // 1 === account
             const result = await getTikToksWithAccount(campaign.account, tiktokCount)
             const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
-            resovle(stored)
+            if(stored) {
+                resovle(true) 
+            }
         }else if(campaign.collectionTypeId === 2) { // 2 === hastag
             const result = await getTikToksWithHastag(campaign.hashtag, tiktokCount)
             const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)

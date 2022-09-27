@@ -61,34 +61,35 @@ const store = asyncHnadler( async (req, res) => {
 
     const campaignData = {
         campaignName: campaignName,
-        account: account,
-        hashtag: '#'+hashtag.replace('#', ''),
+        account: account !== '' ? '@'+account.replace('@', '') : '',
+        hashtag: hashtag !== '' ? '#'+hashtag.replace('#', '') : '',
         collectionTypeId: collectionType,
         linkTypeId: linkType,
         visibility: 1,
         userId: userId
     }
 
-    // const campaign = await Campaign.create(campaignData).then(campaigns => {
-    //     return campaigns.get({ plain: true })
-    // })
+    const campaign = await Campaign.create(campaignData).then(campaigns => {
+        return campaigns.get({ plain: true })
+    })
 
-    // if(campaign) {
+    if(campaign) {
 
-    //     const result = await storeTikToksInAllTables(campaign)
+        const result = await storeTikToksInAllTables(campaign)
 
-    //     if(result) {
-    //         res.status(201).send({success: {
-    //             stored: `The ${campaign.campaignName} was successfully created!`
-    //         }})
-    //     }
+        if(result) {
+            res.status(201).send({success: {
+                stored: `The ${campaign.campaignName} was successfully created!`
+            }})
+        } else {
+            res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
+            throw new Error('Invalid campaign data')
+        }
 
-    // } else {
-    //     res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
-    //     throw new Error('Invalid campaign data')
-    // }
-    console.log(campaignData)
-    res.send('test')
+    } else {
+        res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
+        throw new Error('Invalid campaign data')
+    }
 })
 
 // @desc PUT campaigns
@@ -112,7 +113,7 @@ const updateVisibility = asyncHnadler( async (req, res) => {
 
     if(campaign) {
         res.status(201).send({success: {
-            updatedVisibility: `The camapign is set to ${ visibility === true ? 'Private':'Public' }!`
+            updatedVisibility: `${ visibility === true ? 'Private':'Public' }`
         }})
     } else {
         res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })

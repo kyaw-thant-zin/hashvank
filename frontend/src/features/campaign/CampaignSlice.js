@@ -11,6 +11,9 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: '',
+    isStored: '',
+    isDestroy: '',
+    isUpdated: '',
 }
 
 // fetch campaigns
@@ -76,9 +79,11 @@ export const campaignSlice = createSlice({
     reducers: {
         reset: (state) => {
             state.isError = false
-            state.isSuccess = false
             state.isLoading = false
             state.message = ''
+            state.isStored = false
+            state.isDestroy = false
+            state.isUpdated = false
         },
         setCampaignPagiPage: (state, action) => {
             state.campaignTablePagiPage = action.payload
@@ -108,12 +113,12 @@ export const campaignSlice = createSlice({
             })
             .addCase(store.pending, (state) => {
                 state.isLoading = true
-                state.isCreated = false
-                state.isSuccess = false
+                state.isError = false
+                state.isStored = false
             })
             .addCase(store.fulfilled, (state, action) => {
                 state.isError = false
-                state.isSuccess = true
+                state.isStored = true
                 state.isLoading = false
                 state.message = action.payload
             })
@@ -121,17 +126,17 @@ export const campaignSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
-                state.isSuccess = false
+                state.isStored = false
             })
             .addCase(updateVisibility.pending, (state, action) => {
                 state.message = ''
-                state.isSuccess = false
+                state.isUpdated = false
                 state.isError = false
                 state.isLoading = true
             })
             .addCase(updateVisibility.fulfilled, (state, action) => {
                 state.message = action.payload
-                state.isSuccess = true
+                state.isUpdated = true
                 state.isError = false
                 state.isLoading = false
             })
@@ -140,15 +145,16 @@ export const campaignSlice = createSlice({
                 state.isError = false
                 state.isLoading = true
                 state.message = ''
+                state.isDestroy = false
             })
             .addCase(destroy.fulfilled, (state, action) => {
-                state.isSuccess = true
+                state.isDestroy = true
                 state.isError = false
                 state.isLoading = false
                 state.message = action.payload
             })
             .addCase(destroy.rejected, (state, action) => {
-                state.isSuccess = false
+                state.isDestroy = false
                 state.isError = true
                 state.isLoading = false
                 state.message = action.payload
