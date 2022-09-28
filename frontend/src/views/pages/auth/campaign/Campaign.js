@@ -141,6 +141,7 @@ const Campaign = (props) => {
                 setCampaignIdDelete(id)
             }else if(action === 'edit') {
                 // navigate to edit page
+                navigate('/campaign/edit/'+id)
             }
         },
         [],

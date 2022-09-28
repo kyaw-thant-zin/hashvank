@@ -13,6 +13,12 @@ const store = async (campaignData) => {
     return response.data
 }
 
+// fetch campaign
+const edit = async (id) => {
+    const response = await privateApi().get('/campaigns/'+id, id)
+    return response.data
+}
+
 // update campaign
 const update = async (camapignData) => {
     const response = await privateApi().put('/campaigns/update/'+camapignData.id, camapignData.data)
@@ -34,6 +40,7 @@ const destroy = async (campaignId) => {
 const campaignService = {
     index,
     store,
+    edit,
     update,
     destroy,
     updateVisibility

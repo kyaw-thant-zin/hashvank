@@ -92,6 +92,32 @@ const store = asyncHnadler( async (req, res) => {
     }
 })
 
+// @desc GET campaign
+// @route GET /campaign/:id
+// @access Private
+const edit = asyncHnadler( async (req, res) => {
+
+    const {userId, id} = req.body
+
+    if(!userId) {
+        res.status(400).send({ error: { required: 'Please add all fields' } })
+        throw new Error('Please add all fields')
+    }
+
+    let campaign = await Campaign.findAll({ 
+        where: {
+            userId: userId,
+            id: id
+        },
+        include: [ CollectionType, LinkType ],
+        order: [
+            ['id', 'DESC'],
+        ],
+    })
+
+    res.send(campaign)
+})
+
 // @desc PUT campaigns
 // @route PUT /campaigns/visibility/update
 // @access Private
@@ -156,6 +182,7 @@ const destroy = asyncHnadler( async (req, res) => {
 module.exports = {
     index,
     store,
+    edit,
     updateVisibility,
     destroy
 }

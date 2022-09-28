@@ -5,6 +5,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import campaignService from './CampaignService';
 
 const initialState = {
+    campaign: [],
     campaigns: [],
     campaignTablePagiPage: 0,
     isError: false,
@@ -39,10 +40,10 @@ export const store = createAsyncThunk('campaign/store', async (camapignData, thu
     }
 })
 
-// update campaigns
-export const update = createAsyncThunk('campaign/update', async (camapignData, thunkAPI) => {
+// fetch campaigns
+export const edit = createAsyncThunk('campaign/edit', async (id, thunkAPI) => {
     try {
-        const res = await campaignService.update(camapignData)
+        const res = await campaignService.edit(id)
         return res
     } catch (error) {
         const message = error.response.data
@@ -123,6 +124,23 @@ export const campaignSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(store.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+                state.isStored = false
+            })
+            .addCase(edit.pending, (state) => {
+                state.isLoading = true
+                state.isError = false
+                state.isStored = false
+            })
+            .addCase(edit.fulfilled, (state, action) => {
+                state.isError = false
+                state.isStored = true
+                state.isLoading = false
+                state.campaign = action.payload.length > 0 ? action.payload[0] : action.payload
+            })
+            .addCase(edit.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

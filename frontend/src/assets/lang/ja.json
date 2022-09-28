@@ -78,8 +78,10 @@
   },
   "campaign": {
     "pageTitle": "キャンペーン",
+    "pageTitleEdit": "キャンペーンの編集",
     "tableTitle": "キャンペーン一覧",
     "btnNewCampaign": "新規作成",
+    "btnUpdateCampaign": "更新",
     "tableName": "キャンペーン名",
     "tableCreated": "作成日",
     "tableCollectionType": "収集タイプ",

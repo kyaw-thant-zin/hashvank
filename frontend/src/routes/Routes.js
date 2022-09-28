@@ -10,6 +10,7 @@ import SignUp from "../views/pages/common/sign/SignUp";
 import Dashboard from "../views/pages/auth/dashboard/Dashboard";
 import Campaign from "../views/pages/auth/campaign/Campaign";
 import NewCampaign from "../views/pages/auth/campaign/new/NewCampaign";
+import EditCampaign from "../views/pages/auth/campaign/edit/EditCampaign";
 import CampaignOutput from '../views/pages/auth/campaign-output/CampaignOutput';
 import Report from "../views/pages/auth/report/Report";
 import LinkSetting from "../views/pages/auth/link-setting/LinkSetting";
@@ -31,6 +32,9 @@ const PagesRoutes = () => {
                 </Route>
                 <Route exact path='campaign' element={<RouteRequiresLogin />}>
                   <Route exact path='/campaign/create' element={<NewCampaign />} ></Route>
+                </Route>
+                <Route exact path='campaign' element={<RouteRequiresLogin />}>
+                  <Route exact path='/campaign/edit/:id' element={<EditCampaign />} ></Route>
                 </Route>
                 <Route exact path='campaign-output' element={<RouteRequiresLogin />}>
                   <Route exact path='/campaign-output' element={<CampaignOutput />} ></Route>

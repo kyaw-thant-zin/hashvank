@@ -78,8 +78,10 @@
     },
     "campaign": {
       "pageTitle": "Campaign",
+      "pageTitleEdit": "Edit Campaign",
       "tableTitle": "Campaign List",
       "btnNewCampaign": "New Campaign",
+      "btnUpdateCampaign": "Update",
       "tableName": "Campaign Name",
       "tableCreated": "Created",
       "tableCollectionType": "Collection Type",
