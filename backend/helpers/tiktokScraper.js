@@ -206,20 +206,22 @@ const getTikTokByAccount = async (account, options) => {
                 withCredentials: true,
             });
 
-            let secUid = ''
-            if('userInfo' in res.data) {
-                secUid = res.data.userInfo.user.secUid
-            } else {
-                reject('error')
-            }
+            console.log(res.data)
 
-            baseParams.secUid = secUid
-            const qsObject2 = new URLSearchParams(baseParams)
-            const qs2 = qsObject2.toString()
-            const url2 = videoURL + `?${qs2}`
+            // let secUid = ''
+            // if('userInfo' in res.data) {
+            //     secUid = res.data.userInfo.user.secUid
+            // } else {
+            //     reject('error')
+            // }
 
-            const response = await scrape(url2, 'account')
-            resovle(response)
+            // baseParams.secUid = secUid
+            // const qsObject2 = new URLSearchParams(baseParams)
+            // const qs2 = qsObject2.toString()
+            // const url2 = videoURL + `?${qs2}`
+
+            // const response = await scrape(url2, 'account')
+            // resovle(response)
 
         } catch (error) {
             console.log(error)
