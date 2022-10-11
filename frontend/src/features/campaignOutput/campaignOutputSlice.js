@@ -113,6 +113,7 @@ export const campaignOutputSlice = createSlice({
             .addCase(updateVisibility.fulfilled, (state, action) => {
                 state.message = action.payload
                 state.isUpdatedVisibility = true
+                state.isLoading = false
             })
             .addCase(updateLinkUrl.pending, (state) => {
                 state.isLoading = true
@@ -123,6 +124,7 @@ export const campaignOutputSlice = createSlice({
             .addCase(updateLinkUrl.fulfilled, (state, action) => {
                 state.message = action.payload
                 state.isUpdatedLinkUrl = true
+                state.isLoading = false
             })
             .addCase(updatePriority.pending, (state) => {
                 state.isLoading = true
@@ -133,6 +135,7 @@ export const campaignOutputSlice = createSlice({
             .addCase(updatePriority.fulfilled, (state, action) => {
                 state.message = action.payload
                 state.isUpdatedPriority = true
+                state.isLoading = false
             })
     }
 })

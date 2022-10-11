@@ -24,7 +24,8 @@ const index = asyncHnadler( async (req, res) => {
         },
         include: [ TiktokInfo ],
         order: [
-            ['id', 'DESC'],
+            // [ TiktokInfo, 'id', 'DESC'],
+            [ 'id', 'DESC'],
         ],
     })
     res.send(campaigns)
@@ -51,7 +52,7 @@ const updateVisibility = asyncHnadler( async (req, res) => {
 
     if(campaign) {
         res.status(201).send({success: {
-            updatedVisibility: `The video is set to ${ visibility === true ? 'Private':'Public' }!`
+            updatedVisibility: `${ visibility === true ? 'Private':'Public' }`
         }})
     } else {
         res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
@@ -107,7 +108,7 @@ const updatePriority = asyncHnadler( async (req, res) => {
 
     if(campaign) {
         res.status(201).send({success: {
-            updatedPriority: `The video priority is updated!`
+            updatedPriority: `The priority setting of this video is updated!`
         }})
     } else {
         res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })

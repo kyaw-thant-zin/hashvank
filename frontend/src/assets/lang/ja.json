@@ -113,7 +113,10 @@
     "tableHashtag": "ハッシュタグ",
     "tableView": "View",
     "tableLink": "リンク",
-    "tablePriority": "優先"
+    "tablePriority": "優先",
+    "updatedVisibilityPublic": "ビデオは公開に設定されています！",
+    "updatedVisibilityPrivate": "動画はプライベートに設定されています！",
+    "updatedPriority": "この動画の優先度設定を更新しました！"
   },
   "report": {
     "pageTitle": "レポート"

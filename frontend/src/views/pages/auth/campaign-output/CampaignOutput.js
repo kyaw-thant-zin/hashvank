@@ -6,6 +6,9 @@ import { Box, Card, CardContent, CardHeader, Divider, Typography, Backdrop, Circ
 // REDUX
 import { useSelector, useDispatch } from "react-redux";
 
+// SLICE
+import { index, updateVisibility, updateLinkUrl, updatePriority, visibilityReset, priorityReset } from "../../../../features/campaignOutput/campaignOutputSlice";
+
 // MOMENT
 import moment from 'moment';
 
@@ -29,8 +32,7 @@ import { t } from '../../../../common/SwitchLang';
 const CampaignOutput = (props) => {
 
     const dispatch = useDispatch()
-    // const { campaigns, isLoading, message, isUpdatedVisibility, isUpdatedPriority } = useSelector((state) => state.campaignOutput)
-    const { campaigns, isLoading, message, isUpdatedVisibility, isUpdatedPriority } = ''
+    const { campaigns, isLoading, message, isUpdatedVisibility, isUpdatedPriority } = useSelector((state) => state.campaignOutput)
   
     // Onchange campaing type
     const [campaignType, setCampaignType] = React.useState('all')
@@ -82,7 +84,7 @@ const CampaignOutput = (props) => {
                   linkUrl: updatedModel[id].link.value
               }
             }
-            // dispatch(updateLinkUrl(camapignData))
+            dispatch(updateLinkUrl(camapignData))
           }
   
         }
@@ -104,10 +106,88 @@ const CampaignOutput = (props) => {
     // TABLE BODY
   
     // fetch the campaigns
-    
+    React.useEffect(()=> {
+
+      dispatch(index())
+
+    }, [dispatch])
   
     // set the table data
+    React.useEffect(() => {
+
+      if(campaigns) {
+        const campaignOutputTableRows = campaigns.map((campaign) => {
+          
+          const campaignOutputs = campaign.tiktokInfos.map((campaignOutput) => {
     
+            const row = { 
+                id: campaignOutput.id, 
+                visibility: !campaignOutput.visibility,
+                campaignName: campaign.campaignName, 
+                tiktok: campaignOutput.videoUrl,
+                created: moment(campaignOutput.createTime).format('DD/MM/YYYY'),
+                account: campaignOutput.account,
+                hashtag: campaign.hashtag,
+                views: campaignOutput.views,
+                link: campaignOutput.linkUrl ? campaignOutput.linkUrl : '',
+                priority: campaignOutput.priority,
+                url: campaignOutput.webVideoUrl
+            }
+    
+            return row
+          })
+          return campaignOutputs
+        })
+  
+        if(campaignOutputTableRows && campaignOutputTableRows.length > 0) {
+          let tbRows = []
+          campaignOutputTableRows.forEach((el, index) => {
+            if(el.length > 0) {
+              el.forEach((e, i) => {
+                tbRows.push(e)
+              })
+            }
+          }) 
+          setTableRows(tbRows)
+        }
+  
+        const campaignMenus = campaigns.map((campaign) => {
+  
+          return {
+            name: campaign.campaignName,
+            value: campaign.campaignName
+          }
+    
+        })
+    
+        if(campaignMenus && campaignMenus.length > 0) {
+          campaignMenus.unshift({name: t('campaignOutput.selectAllCampaign'), value: 'all' })
+          setCampaignMenuItems(campaignMenus)
+        }
+  
+      }
+  
+    }, [campaigns, setTableRows, setCampaignMenuItems])
+    
+    // reset the messages
+    React.useEffect(() => {
+
+      let timerAll
+
+      if(isUpdatedVisibility) {  
+        timerAll = setTimeout(() => {
+          dispatch(visibilityReset())
+        }, 1000);
+      } else if(isUpdatedPriority) {
+        timerAll = setTimeout(() => {
+          dispatch(priorityReset())
+        }, 1000);
+      }
+
+      return () => clearTimeout(timerAll)
+
+
+  }, [isUpdatedPriority, isUpdatedVisibility])
   
     // handle change the public and private
     const handleChangeVisibility = (event) => {
@@ -138,7 +218,7 @@ const CampaignOutput = (props) => {
               visibility: event.target.checked
           }
       }
-    //   dispatch(updateVisibility(camapignData))
+      dispatch(updateVisibility(camapignData))
   
     }
   
@@ -171,7 +251,7 @@ const CampaignOutput = (props) => {
             priority: event.target.checked
         }
       }
-    //   dispatch(updatePriority(camapignData))
+      dispatch(updatePriority(camapignData))
     }
   
     // TABLE HEADER
@@ -201,13 +281,13 @@ const CampaignOutput = (props) => {
         {
   
           isUpdatedVisibility ? (
-            <AlertCop severity="success" open={isUpdatedVisibility} message={message?.success?.updatedVisibility} />
+            <AlertCop severity="success" open={isUpdatedVisibility} message={t('campaignOutput.updatedVisibility'+message?.success?.updatedVisibility)} />
           ) : ''
         }
         {
   
           isUpdatedPriority ? (
-            <AlertCop severity="success" open={isUpdatedPriority} message={message?.success?.updatedPriority} />
+            <AlertCop severity="success" open={isUpdatedPriority} message={t('campaignOutput.updatedPriority')} />
           ) : ''
         }
         <Layout>
