@@ -7,20 +7,23 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CheckIcon from '@mui/icons-material/Check';
 import { Box } from "@mui/system";
 
+// LANG
+import { t } from '../../common/SwitchLang';
+
 export default function DialogDeleteCop(props) {
 
     return (
         <Dialog open={props.open} onClose={props.handleClose} fullWidth={true} maxWidth="xs" >
-            <DialogTitle sx={{ color: 'rgb(1, 67, 97)', fontSize: '16px' }}>Are your sure you want to delete it?</DialogTitle>
+            <DialogTitle sx={{ color: 'rgb(1, 67, 97)', fontSize: '16px' }}>{t('campaign.deleteModalTitle')}</DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ fontFamily: '"GothamBook", sans-serif', fontSize: '13px' }}>
-                    This campaign will be deleted immediately. You can't undo this action.
+                    {t('campaign.deleteModalDesc')}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button size="small" onClick={props.handleClose} loading="true" sx={{ marginRight: '20px' }}>CANCLE</Button>
+                <Button size="small" onClick={props.handleClose} loading="true" sx={{ marginRight: '20px' }}>{t('campaign.deleteModalCancel')}</Button>
                 <Box sx={{ position: 'relative' }}>
-                    <Button size="small" color={props.success ? "success":"error"} onClick={props.handleClickDelete} variant="outlined" startIcon={props.success ? <CheckIcon /> : <DeleteIcon />}>DELETE</Button>
+                    <Button size="small" color={props.success ? "success":"error"} onClick={props.handleClickDelete} variant="outlined" startIcon={props.success ? <CheckIcon /> : <DeleteIcon />}>{t('campaign.deleteModalDelete')}</Button>
                     {
                         props.loading ? (
                             <CircularProgress 

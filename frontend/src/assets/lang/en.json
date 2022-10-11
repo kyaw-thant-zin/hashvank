@@ -95,7 +95,11 @@
       "newCollectionType": "Collection Type",
       "newAccount": "Account",
       "newHashtag": "Hashtag",
-      "newLinkType": "Linktype"
+      "newLinkType": "Linktype",
+      "deleteModalTitle": "Are you sure you want to delete it?",
+      "deleteModalDesc": "This campaign will be deleted immediately. You can't undo this action.",
+      "deleteModalCancel": "CANCEL",
+      "deleteModalDelete": "DELETE"
     },
     "campaignOutput": {
       "pageTitle": "Campaign Output",

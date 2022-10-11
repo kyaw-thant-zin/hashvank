@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // SLICE
 import { collectionTypeIndex } from '../../../../../features/collectionType/collectionTypeSlice';
 import { linkTypeIndex } from '../../../../../features/linkType/linkTypeSlice';
-import { edit, reset } from "../../../../../features/campaign/CampaignSlice";
+import { edit, update, reset } from "../../../../../features/campaign/CampaignSlice";
 
 // HELPER
 import Validation from '../../../../../common/FormValidation';
@@ -53,14 +53,15 @@ const EditCampaign = (props) => {
 
         if(campaign) {
 
-            setLinkTypeSel(campaign.linkType.id)
-            changeCollectionType( 'collectionType', campaign.collectionType.id)
+            // changeCollectionType( 'collectionType', campaign.collectionType.id)
+            // setLinkTypeSel('')
 
             setFormData((prevState) => ({
                 ...prevState,
                 campaignName: campaign.campaignName,
                 account: campaign.account,
                 hashtag: campaign.hashtag,
+                linkType: campaign.linkType.id
             }))
         }
 
@@ -139,7 +140,7 @@ const EditCampaign = (props) => {
     const [inputAccountDisabled, setInputAccountDisabled] = React.useState(true);
     const [inputHashtagDisabled, setInputHashtagDisabled] = React.useState(true);
     const [collectionTypeSel, setCollectionTypeSel] = React.useState('');
-    const [linkTypeSel, setLinkTypeSel] = React.useState('');
+    // const [linkTypeSel, setLinkTypeSel] = React.useState('');
 
     const handleFormDataChange = (e) => {
         setFormData((prevState) => ({
@@ -174,7 +175,7 @@ const EditCampaign = (props) => {
     };
 
     const handleChangeLinkType = (event) => {
-        setLinkTypeSel(event.target.value);
+        // setLinkTypeSel(event.target.value);
         setFormData((prevState) => ({
             ...prevState,
             [event.target.name]: event.target.value,
@@ -191,10 +192,17 @@ const EditCampaign = (props) => {
     const handleFormSubmit = (e) => {
         e.preventDefault()
 
-        const validationRes = validateForm(campaignName, collectionType, account, hashtag, linkType)
+        let validationRes = false
+
+        if(formData.hashtag !== '') {
+            validationRes = validateForm(campaignName, hashtag, linkType)
+        } else if(formData.account !== '') {
+            validationRes = validateForm(campaignName, account, linkType)
+        }
+
         if(validationRes) {
             // store the campaign
-            // dispatch(store(formData))
+            // dispatch(update(formData))
         }
 
 
@@ -306,6 +314,8 @@ const EditCampaign = (props) => {
     
     }
 
+    
+
     return (
     <>
         {
@@ -356,10 +366,15 @@ const EditCampaign = (props) => {
                                 <form onSubmit={handleFormSubmit}>
                                     <Stack spacing={3}>
                                         <InputCop name="campaignName" value={campaignName} error={isErrorCampaignName} helperText={messageCampaignName} onChange={handleFormDataChange} placeholder={t('campaign.newCampaignName')} required="required" />
-                                        <SelectCop name="collectionType" error={isErrorCollectionType} helperText={messageCollectionType} placeholder={t('campaign.newCollectionType')} data={{ change: handleChangeCollectionType, value: collectionTypeSel }} menuitems={collectionTypeMenuItems} required="true" />
-                                        <InputCop name="account" value={account} placeholder={t('campaign.newAccount')} error={isErrorAccount} helperText={messageAccount} onChange={handleFormDataChange} disabled={inputAccountDisabled} />
-                                        <InputCop name="hashtag" value={hashtag} placeholder={t('campaign.newHashtag')} error={isErrorHashtag} helperText={messageHashtag} onChange={handleFormDataChange} disabled={inputHashtagDisabled}  />
-                                        <SelectCop name="linkType" placeholder={t('campaign.newLinkType')} error={isErrorLinkType} helperText={messageLinkType}  data={{ change: handleChangeLinkType, value: linkTypeSel }} menuitems={linkTypeMenuItems} required="true" />
+                                        {/* <SelectCop name="collectionType" error={isErrorCollectionType} helperText={messageCollectionType} placeholder={t('campaign.newCollectionType')} data={{ change: handleChangeCollectionType, value: collectionTypeSel }} menuitems={collectionTypeMenuItems} required="true" /> */}
+                                        {
+                                            campaign.collectionTypeId === 1 ? (
+                                                <InputCop name="account" value={account} placeholder={t('campaign.newAccount')} error={isErrorAccount} helperText={messageAccount} onChange={handleFormDataChange} />
+                                            ) : (
+                                                <InputCop name="hashtag" value={hashtag} placeholder={t('campaign.newHashtag')} error={isErrorHashtag} helperText={messageHashtag} onChange={handleFormDataChange}  />
+                                            )
+                                        }
+                                        <SelectCop defaultValue={campaign.linkTypeId} name="linkType" placeholder={t('campaign.newLinkType')} error={isErrorLinkType} helperText={messageLinkType}  data={{ change: handleChangeLinkType, value: campaign.linkTypeId }} menuitems={linkTypeMenuItems} required="true" />
                                     </Stack>
                                 </form>
                             </Grid>

@@ -5,7 +5,6 @@ import { theme } from "../../layout/Theme";
 export default function SelectCop(props) {
 
     const options = props.menuitems
-    
 
     return (
         <Box minWidth={props.minWidth} sx={theme.form.box}>
@@ -19,7 +18,7 @@ export default function SelectCop(props) {
                 >
                     {
                         options.map((menuitem, index) => (
-                            <MenuItem value={menuitem.value} key={index}>{menuitem.name}</MenuItem>
+                            <MenuItem selected={true} value={menuitem.value} key={index}>{menuitem.name}</MenuItem>
                         ))
                     }
                 </Select>

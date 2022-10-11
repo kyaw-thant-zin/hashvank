@@ -1,5 +1,5 @@
 const asyncHnadler = require('express-async-handler')
-const { storeTikToksInAllTables } = require('../helpers/campaignHelpers')
+const { storeTikToksInAllTables, updateTiktoksInAllTables } = require('../helpers/campaignHelpers')
 const db = require('../models/index')
 
 // Create main Model
@@ -118,6 +118,63 @@ const edit = asyncHnadler( async (req, res) => {
     res.send(campaign)
 })
 
+// @desc PUT campaign
+// @route PUT /campaign/update/:id
+// @access Private
+const update = asyncHnadler( async (req, res) => {
+
+    const {userId, id, campaignName, account, hashtag, linkType, } = req.body
+
+    if(!campaignName || !linkType || !userId || !id) {
+        res.status(400).send({ error: { required: 'Please add all fields' } })
+        throw new Error('Please add all fields')
+    }
+
+    // Check campaign exists
+    const camapignExists = await Campaign.findOne({ where: { campaignName: campaignName, userId: userId } })
+    if(camapignExists) {
+        res.status(400).send({ error: { camapignExists: 'The campaign name has already been taken.' } })
+        throw new Error('The campaign name has already been taken.')
+    }
+
+    const campaignData = {
+        campaignName: campaignName,
+        account: account !== '' ? '@'+account.replace('@', '') : '',
+        hashtag: hashtag !== '' ? '#'+hashtag.replace('#', '') : '',
+        linkTypeId: linkType,
+        userId: userId
+    }
+
+    const campaign = await Campaign.update( campaignData, {
+        where: {
+            id: id,
+            userId: userId
+        }
+    }).then(campaign => {
+        return campaign.get({ plain: true })
+    })
+
+    if(campaign) {
+
+        const result = await updateTiktoksInAllTables(campaign)
+
+        if(result) {
+            res.status(201).send({success: {
+                stored: `The ${campaign.campaignName} was successfully created!`
+            }})
+        } else {
+            res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
+            throw new Error('Invalid campaign data')
+        }
+
+    } else {
+        res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
+        throw new Error('Invalid campaign data')
+    }
+
+    res.send(campaign)
+})
+
 // @desc PUT campaigns
 // @route PUT /campaigns/visibility/update
 // @access Private
@@ -183,6 +240,7 @@ module.exports = {
     index,
     store,
     edit,
+    update,
     updateVisibility,
     destroy
 }

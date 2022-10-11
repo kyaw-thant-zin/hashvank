@@ -40,10 +40,21 @@ export const store = createAsyncThunk('campaign/store', async (camapignData, thu
     }
 })
 
-// fetch campaigns
+// edit campaign
 export const edit = createAsyncThunk('campaign/edit', async (id, thunkAPI) => {
     try {
         const res = await campaignService.edit(id)
+        return res
+    } catch (error) {
+        const message = error.response.data
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// update campaign
+export const update = createAsyncThunk('campaign/update', async (id, thunkAPI) => {
+    try {
+        const res = await campaignService.update(id)
         return res
     } catch (error) {
         const message = error.response.data

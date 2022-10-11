@@ -95,7 +95,11 @@
     "newCollectionType": "収集タイプ",
     "newAccount": "アカウント",
     "newHashtag": "ハッシュタグ",
-    "newLinkType": "リンクタイプ"
+    "newLinkType": "リンクタイプ",
+    "deleteModalTitle": "本当に削除しますか?",
+    "deleteModalDesc": "このキャンペーンはただちに削除されます。 このアクションは元に戻せません。",
+    "deleteModalCancel": "取消",
+    "deleteModalDelete": "消去"
   },
   "campaignOutput": {
     "pageTitle": "表示設定",
