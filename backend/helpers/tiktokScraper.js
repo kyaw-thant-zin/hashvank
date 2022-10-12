@@ -75,12 +75,16 @@ const profileParams = {
     "msToken": "1BryaEhw6wUzEjGIqicKSX8SwmQmibTCUCd4abZTwaHNaOVKSWBlAlsU1rKeNOFKnwdcOeU0XuQULYJKEhYj7Nt7t64xDHqid5hZShL3R0ziTBWl6NCa6mBB0GjN1u4Vvc-BS8s=",
 }
 
-const cookies = 'ttwid=1|SKruGNyl0VDzXp7EMZoTFhX1V3bsfQ4oVk2P56ZU3tw|1664249066|6a88a3427d163859bce5a6b7861dbfa496c9fdd04f5833efdb98afe355785537; bm_sv=AB306D277837678D3316833FBACA732B~YAAQnKg7F+O8nFmDAQAALHP5fBGB5KkEAoIc4tRC4KpUmJmEKGD3qUvl0j3aTw5WDw26350XITc21EWDWai7Mu/8zO2w4J/1M0HBCdH7fId8eq/2CVIbIeTC0C7ufPVZMOEwWf4nWSS5bpKYaA+kCW1mIfra+vJOL6P6Lyu2m643gnEGbgpEmLEytRubzM8DlDeixTVWo4vWjnRPwjeVJjIBlKSU+a+ATW2zlQmi8UJDu1+2oF948WXdrH3piLaJ~1; msToken=Z5hEAk6LKoFW1rGvoEfLCMAVeBW_i2uJOPSqWW4yeD83_Cv7p3q613uaQpA1rOVV-Rhj0oZwHvt8KQhqY_kQbarAUJZLC45heWXtbv0ShKxNc_UWq7VgnMuJ7cxBcaGFwRJJJrU=; msToken=Z5hEAk6LKoFW1rGvoEfLCMAVeBW_i2uJOPSqWW4yeD83_Cv7p3q613uaQpA1rOVV-Rhj0oZwHvt8KQhqY_kQbarAUJZLC45heWXtbv0ShKxNc_UWq7VgnMuJ7cxBcaGFwRJJJrU='
+const cookies = {
+    "ttwid": "1|SKruGNyl0VDzXp7EMZoTFhX1V3bsfQ4oVk2P56ZU3tw|1664249066|6a88a3427d163859bce5a6b7861dbfa496c9fdd04f5833efdb98afe355785537; ",
+    "msToken": "1BryaEhw6wUzEjGIqicKSX8SwmQmibTCUCd4abZTwaHNaOVKSWBlAlsU1rKeNOFKnwdcOeU0XuQULYJKEhYj7Nt7t64xDHqid5hZShL3R0ziTBWl6NCa6mBB0GjN1u4Vvc-BS8s="
+}
+
 
 const headers = {
     'user-agent': USER_AGENT,
     'referer': 'https://www.tiktok.com/',
-    'Cookie': cookies
+    'Cookie': objToString(cookies)
 }
 
 const scrape = async (url, type) => {
@@ -261,6 +265,12 @@ const getTikTokByAccount = async (account, options) => {
         }
     })
 
+}
+
+function objToString (obj) {
+    return Object.entries(obj).reduce((str, [p, val]) => {
+        return `${str}${p}=${val}`;
+    }, '');
 }
 
 

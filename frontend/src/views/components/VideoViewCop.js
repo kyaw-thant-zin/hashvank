@@ -14,7 +14,12 @@ export default function VideoViewCop(props) {
                 muted
                 loop
                 preload="none"
-                onLoadedData={props.onLoadedData}
+                onLoadStart={() => {
+                  console.log('...I am loading...')
+                }}
+                onLoadedData={() => {
+                  console.log('Data is loaded!')
+              }}
             />
         </CardActionArea>
     </Card>
