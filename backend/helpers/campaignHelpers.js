@@ -41,10 +41,7 @@ const searchByHashtagAndUpdate = async(campaign) => {
 
     return new Promise( async (resovle, reject) => {
         const tiktokInfoIds = campaign.tiktokInfos.map((tInfo) => {
-            console.log(tInfo.campaign)
-            // if(tInfo.campaign.collectionTypeId === 2) {
-            //     return tInfo.id
-            // }
+            return tInfo.id
         })
     
         const tiktoks = await getTikToksWithHastag(campaign.hashtag, campaign.apiSetting.layoutType)
@@ -95,22 +92,47 @@ const searchByAccountandUpdateLayoutType = asyncHnadler( async(campaign) => {
 
 const searchByAccountAndUpdate = async(campaign) => {
 
+    console.log('fetching by account......!')
+
     return new Promise( async (resovle, reject) => {
+
         const tiktokInfoIds = campaign.tiktokInfos.map((tInfo) => {
-            if(tInfo.campaign.collectionTypeId === 1) {
-                return tInfo.id
+            return tInfo.id
+        })
+
+        console.log(tiktokInfoIds)
+
+        const tiktokOptions = {
+            count: process.env.TIKTOK_LAYOUT_COUNT || 12,
+            offset: campaign.offset,
+            cursor: campaign.cursor
+        }
+    
+        const data = await getTikToksWithAccount(campaign.account, tiktokOptions)
+        const tiktoks = data.collector
+        
+        const campaignData = {
+            offset: data.offset,
+            cursor: data.cursor
+        }
+    
+        await Campaign.update( campaignData, {
+            where: {
+                id: campaign.id,
             }
         })
-    
-        const tiktoks = await getTikToksWithAccount(campaign.account, campaign.apiSetting.layoutType)
+
+
+
         if(tiktoks.length > 0) {
             const tiktokInfoDataBeforeSort = bulkCreateTikToks(tiktoks, 'updateSchedule', tiktokInfoIds, campaign.id)
             if(tiktokInfoDataBeforeSort) {
-                const infos = await TiktokInfo.bulkCreate(tiktokInfoDataBeforeSort, { updateOnDuplicate: [ 'videoId', 'account', 'hashtag', 'views', 'heart', 'comments', 'share', 'videoUrl', 'webVideoUrl', 'expiresIn',  ] })
-                                .then(infos => {
-                                    console.log('updated')
-                                    return infos
-                                })
+                const infos = await TiktokInfo.bulkCreate(tiktokInfoDataBeforeSort, { 
+                    updateOnDuplicate: [ 'videoId', 'account', 'hashtag', 'views', 'heart', 'comments', 'share', 'videoUrl', 'webVideoUrl', 'expiresIn',  ] 
+                }).then(infos => {
+                    console.log('updated')
+                    return infos
+                })
                 if(infos) {
                     resovle(true)
                 } else {
@@ -124,7 +146,9 @@ const searchByAccountAndUpdate = async(campaign) => {
 
 const tiktokUpdateOnSchedule = asyncHnadler( async () => {
 
-    // run every minute with schedule
+    console.log('updating.......!')
+
+    // run with schedule
     const campaigns = await Campaign.findAll({
         include: [ TiktokInfo, ApiSetting]
     }).then(campaigns => {
@@ -135,12 +159,18 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
 
         campaigns.forEach( async (campaign) => {
             
-            if(campaign.collectionTypeId === 1) {
-                // search by account and update
-                await searchByAccountAndUpdate(campaign)
+            const maxCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
+
+            if(maxCount < campaign.videoCount) {
+                if(campaign.collectionTypeId === 1) {
+                    // search by account and update
+                    await searchByAccountAndUpdate(campaign)
+                } else {
+                    // search by hashtag and update
+                    await searchByHashtagAndUpdate(campaign)
+                }
             } else {
-                // search by hashtag and update
-                await searchByHashtagAndUpdate(campaign)
+
             }
 
         });
@@ -176,30 +206,28 @@ const getTikToksWithHastag = async (hashtag, tiktokCount) => {
     })
 }
 
-const getTikToksWithAccount = async (account, tiktokCount) => {
+const getTikToksWithAccount = async (account, options) => {
 
-    
+    console.log('searching with account.....!')
     return new Promise( async(resovle, reject) => {
         const tiktok_account_name = account.replace('@', '');
 
         try {
 
-            const posts = await getTikTokByAccount(tiktok_account_name, {
-                number: tiktokCount
-            })
-            
+            const posts = await getTikTokByAccount(tiktok_account_name, options)
+
             if(posts.collector?.length > 0) {
-                resovle(posts.collector)
+                resovle(posts)
 
             }else {
-                reject(false)
+                resovle(false)
             }
             
         } catch (error) {
             reject(false)
         }
 
-        reject(false)
+        resovle(false)
     })
     
 
@@ -215,10 +243,23 @@ function sortByViews( a, b ) {
     return 0;
 }
 
-const storeDataInAllRequiredTables = asyncHnadler( async (tiktoks, campaignId, campaignUUId) => {
+const storeDataInAllRequiredTables = asyncHnadler( async (result, campaignId, campaignUUId) => {
+
+    const tiktoks = result.collector
+    const campaignData = {
+        offset: result.offset,
+        cursor: result.cursor,
+        videoCount: result.videoCount
+    }
+
+    await Campaign.update( campaignData, {
+        where: {
+            id: campaignId,
+        }
+    })
 
     if(tiktoks.length > 0) {
-
+        
         const tiktokInfoDataBeforeSort = bulkCreateTikToks(tiktoks, 'create', [], campaignId)
 
         // const tiktokInfoData = tiktokInfoDataBeforeSort.sort(sortByViews)
@@ -304,7 +345,7 @@ const bulkCreateTikToks = (tiktoks, state, tiktokInfoIds, campaignId) => {
             
         } else if(state === 'updateSchedule') {
             const row = {
-                id: tiktokInfoIds[index],
+                // id: tiktokInfoIds[index],
                 videoId: tiktok.id,
                 account: '@'+tiktok.authorName,
                 hashtag: tiktok.text,
@@ -345,24 +386,32 @@ const storeTikToksInAllTables = async (campaign) => {
 
         let tiktokCount = process.env.TIKTOK_LAYOUT_COUNT || 12
     
-        const apiSetting = await ApiSetting.findOne({
-            where: {
-                campaignId: campaign.id
-            }
-        })
-    
-        if(apiSetting !== null) {
-            tiktokCount = apiSetting.layoutType
-        }
-    
         if(campaign.collectionTypeId === 1) { // 1 === account
-            const result = await getTikToksWithAccount(campaign.account, tiktokCount)
-            const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
-            if(stored) {
-                resovle(true) 
+            const tiktokOptions = {
+                count: tiktokCount,
+                offset: campaign.offset,
+                cursor: campaign.cursor
+            }
+            try {
+                const result = await getTikToksWithAccount(campaign.account, tiktokOptions)
+                if(result) {
+                    const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
+                    if(stored) {
+                        resovle(true) 
+                    }
+                } else {
+                    reject('error')
+                }
+            } catch (error) {
+                reject(error)
             }
         }else if(campaign.collectionTypeId === 2) { // 2 === hastag
-            const result = await getTikToksWithHastag(campaign.hashtag, tiktokCount)
+            const tiktokOptions = {
+                count: tiktokCount,
+                offset: campaign.offset,
+                cursor: campaign.cursor
+            }
+            const result = await getTikToksWithHastag(campaign.hashtag, tiktokOptions)
             const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
             if(stored) {
                 resovle(true) 

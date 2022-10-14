@@ -65,31 +65,35 @@ const updateLayoutType = asyncHnadler( async (req, res) => {
 
     if(apiSetting) {
 
-        const apiSettingCId = await ApiSetting.findOne({
-            where: {
-                id: id
-            },
-            attributes: ['campaignId']
-        }).then(apiSettings => {
-            return apiSettings.get({ plain: true }) 
-        })
+        // const apiSettingCId = await ApiSetting.findOne({
+        //     where: {
+        //         id: id
+        //     },
+        //     attributes: ['campaignId']
+        // }).then(apiSettings => {
+        //     return apiSettings.get({ plain: true }) 
+        // })
 
-        const campaign = await Campaign.findOne({
-            where: {
-                id: apiSettingCId.campaignId
-            },
-            include: [ TiktokInfo, ApiSetting]
-        }).then(campaign => {
-            return campaign.get({ plain: true })
-        })
+        // const campaign = await Campaign.findOne({
+        //     where: {
+        //         id: apiSettingCId.campaignId
+        //     },
+        //     include: [ TiktokInfo, ApiSetting]
+        // }).then(campaign => {
+        //     return campaign.get({ plain: true })
+        // })
 
-        const result = searchByHashtagandUpdateLayoutType(campaign)
+        // const result = searchByHashtagandUpdateLayoutType(campaign)
 
-        if(result) {
+        // if(result) {
+        //     res.status(201).send({success: {
+        //         updatedLayoutType: `The layout type is updated!`
+        //     }})
+        // }
+
             res.status(201).send({success: {
                 updatedLayoutType: `The layout type is updated!`
             }})
-        }
 
     } else {
         res.status(400).send({ error: { invalid: 'Invalid data.' } })

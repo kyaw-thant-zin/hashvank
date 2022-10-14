@@ -44,6 +44,7 @@ db.tiktokInfos = require('./tiktokInfoModel')(sequelize, DataTypes)
 db.linkSettings = require('./linkSettingModel')(sequelize, DataTypes)
 db.apiSettings = require('./apiSettingModel')(sequelize, DataTypes)
 db.layoutContents = require('./layoutContentModel')(sequelize, DataTypes)
+db.cookies = require('./cookieModel')(sequelize, DataTypes)
 
 db.sequelize.sync({ force: false })
 .then(() => console.log('re-sync done!') )

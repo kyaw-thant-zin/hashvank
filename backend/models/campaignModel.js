@@ -25,6 +25,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        videoCount: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        offset: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        cursor: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         collectionTypeId: {
             type: DataTypes.INTEGER,
             allowNull: true,

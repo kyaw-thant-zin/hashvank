@@ -29,6 +29,8 @@ const index = asyncHnadler( async (req, res) => {
         order: [
             ['id', 'DESC'],
         ],
+    }).catch((error) => {
+        console.log(error)
     })
 
     res.send(campaigns)
@@ -63,6 +65,9 @@ const store = asyncHnadler( async (req, res) => {
         campaignName: campaignName,
         account: account !== '' ? '@'+account.replace('@', '') : '',
         hashtag: hashtag !== '' ? '#'+hashtag.replace('#', '') : '',
+        videoCount: 0,
+        offset: 0,
+        cursor: 0,
         collectionTypeId: collectionType,
         linkTypeId: linkType,
         visibility: 1,
