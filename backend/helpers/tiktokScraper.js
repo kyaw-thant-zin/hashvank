@@ -183,41 +183,45 @@ const getResponse = async (data, options) => {
         resposne.videoCount = 0
         resposne.hasMore = data.has_more
 
+
         const dataList = data.data
 
         resposne.collector = dataList.map((d) => {
 
             const tiktok = d.item
-            return {
-                id: tiktok.video.id,
-                text: tiktok.desc,
-                createTime: tiktok.createTime,
-                authorId: tiktok.author.id,
-                authorName: tiktok.author.uniqueId,
-                authorFollowing: tiktok.authorStats.followingCount,
-                authorFans: tiktok.authorStats.followerCount,
-                authorHeart: tiktok.authorStats.heart,
-                authorVideo: tiktok.authorStats.videoCount,
-                authorDigg: tiktok.authorStats.diggCount,
-                authorVerified: tiktok.author.verified,
-                authorPrivate: tiktok.author.privateAccount,
-                authorSignature: tiktok.author.signature,
-                musicId: tiktok.music.id,
-                musicName: tiktok.music.title,
-                musicAuthor: tiktok.music.authorName,
-                musicOriginal: tiktok.music.original,
-                imageUrl: tiktok.video.originCover,
-                videoUrl: tiktok.video.playAddr,
-                webVideoUrl: `https:www.tiktok.com/@${tiktok.author.uniqueId}/video/${tiktok.video.id}`,
-                videoUrlNoWaterMark: '',
-                diggCount: tiktok.stats.diggCount,
-                shareCount: tiktok.stats.shareCount,
-                playCount: tiktok.stats.playCount,
-                commentCount: tiktok.stats.commentCount,
-                downloaded: false,
+            if(tiktok != undefined) {
+                return {
+                    id: tiktok.video.id,
+                    text: tiktok.desc,
+                    createTime: tiktok.createTime,
+                    authorId: tiktok.author.id,
+                    authorName: tiktok.author.uniqueId,
+                    authorFollowing: tiktok.authorStats.followingCount,
+                    authorFans: tiktok.authorStats.followerCount,
+                    authorHeart: tiktok.authorStats.heart,
+                    authorVideo: tiktok.authorStats.videoCount,
+                    authorDigg: tiktok.authorStats.diggCount,
+                    authorVerified: tiktok.author.verified,
+                    authorPrivate: tiktok.author.privateAccount,
+                    authorSignature: tiktok.author.signature,
+                    musicId: tiktok.music.id,
+                    musicName: tiktok.music.title,
+                    musicAuthor: tiktok.music.authorName,
+                    musicOriginal: tiktok.music.original,
+                    imageUrl: tiktok.video.originCover,
+                    videoUrl: tiktok.video.playAddr,
+                    webVideoUrl: `https:www.tiktok.com/@${tiktok.author.uniqueId}/video/${tiktok.video.id}`,
+                    videoUrlNoWaterMark: '',
+                    diggCount: tiktok.stats.diggCount,
+                    shareCount: tiktok.stats.shareCount,
+                    playCount: tiktok.stats.playCount,
+                    commentCount: tiktok.stats.commentCount,
+                    downloaded: false,
+                }
             }
     
         })
+
     } else if(options.type === 'account') {
 
         resposne.cursor = data.cursor
