@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true
         },
+        hasMore: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
         collectionTypeId: {
             type: DataTypes.INTEGER,
             allowNull: true,

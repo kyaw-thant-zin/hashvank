@@ -8,7 +8,8 @@
     "username": "ユーザー名には、文字、数字、アンダースコア、およびピリオドのみを含めることができます。",
     "emailExists": "メールは既に使用されています。",
     "userExists": "ユーザー名は既に使用されています。",
-    "userNotFound": "ユーザーが存在しません!"
+    "userNotFound": "ユーザーが存在しません!",
+    "hashtagNotFound": "No videos in this hashtag!"
   },
   "message": {
     "campaignStored": "新しいキャンペーンは正常に作成されました！",

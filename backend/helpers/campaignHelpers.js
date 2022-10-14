@@ -12,23 +12,16 @@ const ApiSetting = db.apiSettings
 const LayoutContent = db.layoutContents
 
 // ------------------ HASHTAG ---------------------- //
-const getTikToksWithHastag = async (hashtag, tiktokCount) => {
+const getTikToksWithHastag = async (hashtag, options) => {
 
+    console.log('searching with hashtag.....!')
     return new Promise( async(resovle, reject) => {
         const tiktok_hashtag = hashtag.replace('#', '');
 
         try {
 
-            const posts = await getTikTokByHashtag(tiktok_hashtag, {
-                number: tiktokCount
-            })
-            
-            if(posts.collector?.length > 0) {
-                resovle(posts.collector)
-
-            }else {
-                reject(false)
-            }
+            const posts = await getTikTokByHashtag(tiktok_hashtag, options)
+            resovle(posts)
             
         } catch (error) {
             reject(false)
@@ -137,12 +130,10 @@ const searchByAccountandUpdateLayoutType = asyncHnadler( async(campaign) => {
 const searchByAccountAndUpdate = async(campaign) => {
 
     return new Promise( async (resovle, reject) => {
-
+        
         const tiktokInfoIds = campaign.tiktokInfos.map((tInfo) => {
             return tInfo.id
         })
-
-        console.log(tiktokInfoIds)
 
         const tiktokOptions = {
             count: process.env.TIKTOK_LAYOUT_COUNT || 12,
@@ -155,7 +146,8 @@ const searchByAccountAndUpdate = async(campaign) => {
         
         const campaignData = {
             offset: data.offset,
-            cursor: data.cursor
+            cursor: data.cursor,
+            hasMore: data.hasMore
         }
     
         await Campaign.update( campaignData, {
@@ -204,7 +196,8 @@ const storeDataInAllRequiredTables = asyncHnadler( async (result, campaignId, ca
     const campaignData = {
         offset: result.offset,
         cursor: result.cursor,
-        videoCount: result.videoCount
+        videoCount: result.videoCount,
+        hasMore: result.hasMore
     }
 
     await Campaign.update( campaignData, {
@@ -277,20 +270,18 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
     if(campaigns.length > 0) {
 
         campaigns.forEach( async (campaign) => {
-            
-            const maxCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
 
-            if(maxCount < campaign.videoCount) {
-                if(campaign.collectionTypeId === 1) {
-                    // search by account and update
+            if(campaign.collectionTypeId === 1) {
+                // search by account and update, check the video count
+                const maxCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
+                if(maxCount < campaign.videoCount) {
                     await searchByAccountAndUpdate(campaign)
-                } else {
-                    // search by hashtag and update
-                    await searchByHashtagAndUpdate(campaign)
                 }
             } else {
-
+                // search by hashtag and update
+                await searchByHashtagAndUpdate(campaign)
             }
+            
 
         });
     }
@@ -310,6 +301,7 @@ const storeTikToksInAllTables = async (campaign) => {
     return new Promise( async(resovle, reject) => {
 
         let tiktokCount = process.env.TIKTOK_LAYOUT_COUNT || 12
+        let result = false
     
         if(campaign.collectionTypeId === 1) { // 1 === account
             const tiktokOptions = {
@@ -318,15 +310,7 @@ const storeTikToksInAllTables = async (campaign) => {
                 cursor: campaign.cursor
             }
             try {
-                const result = await getTikToksWithAccount(campaign.account, tiktokOptions)
-                if(!result?.error) {
-                    const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
-                    if(stored) {
-                        resovle(true) 
-                    }
-                } else {
-                    resovle(result)
-                }
+                result = await getTikToksWithAccount(campaign.account, tiktokOptions)
             } catch (error) {
                 reject(error)
             }
@@ -336,10 +320,21 @@ const storeTikToksInAllTables = async (campaign) => {
                 offset: campaign.offset,
                 cursor: campaign.cursor
             }
-            const result = await getTikToksWithHastag(campaign.hashtag, tiktokOptions)
-            const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
-            if(stored) {
-                resovle(true) 
+            try {
+                result = await getTikToksWithAccount(campaign.hashtag, tiktokOptions)
+            } catch (error) {
+                reject(error)
+            }
+        }
+
+        if(result) {
+            if(!result?.error) {
+                const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
+                if(stored) {
+                    resovle(true) 
+                }
+            } else {
+                resovle(result)
             }
         }
 

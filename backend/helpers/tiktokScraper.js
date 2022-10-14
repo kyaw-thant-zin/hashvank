@@ -176,11 +176,12 @@ const getResponse = async (data, options) => {
         collector: []
     }
 
-    resposne.cursor = data.cursor
-    resposne.offset = Number(options.offset) + 1;
-    resposne.videoCount = options.videoCount
-
     if(options.type === 'hashtag') {
+
+        resposne.cursor = data.cursor
+        resposne.offset = Number(options.offset) + 1;
+        resposne.videoCount = 0
+        resposne.hasMore = data.has_more
 
         const dataList = data.data
 
@@ -218,6 +219,11 @@ const getResponse = async (data, options) => {
     
         })
     } else if(options.type === 'account') {
+
+        resposne.cursor = data.cursor
+        resposne.offset = Number(options.offset) + 1;
+        resposne.videoCount = options.videoCount
+        resposne.hasMore = data.has_more
 
         const dataList = data.itemList
         
@@ -272,18 +278,57 @@ const scrape = async (url, options) => {
                 url: url,
                 withCredentials: true,
             });
+
+            // Store the msToken
+            if(response.config?.jar?.toJSON()) {
+                const responseCookies = response.config.jar.toJSON().cookies;
+                const msToken = responseCookies.filter((c)=> {
+                    return c.key === 'msToken';
+                }).map(function(obj) {
+                    return obj.value;
+                });
+
+                if(msToken.length > 0) {
+                    const cookieData = {
+                        "msToken": msToken[0]
+                    }
+    
+                    // update the msToken for next requests
+                    await Cookie.update( cookieData, {
+                        where: {
+                            id: 1,
+                        }
+                    })
+                }
+            }
     
             if (options.type === 'hashtag') {
-                if('data' in response.data) {
-                    resovle(getResponse(response.data, options))
+                if(response.data != '') {
+                    if('data' in response.data) {
+                        resovle(getResponse(response.data, options))
+                    } else {
+                        resovle({
+                            'error': "hashtagNotFound"
+                        })
+                    }
                 } else {
-                    reject('error')
+                    resovle({
+                        'error': "hashtagNotFound"
+                    })
                 }
             } else if (options.type === 'account') {
-                if('itemList' in response.data) {
-                    resovle(getResponse(response.data, options))
+                if(response.data != '') {
+                    if('itemList' in response.data) {
+                        resovle(getResponse(response.data, options))
+                    } else {
+                        resovle({
+                            'error': "userNotFound"
+                        })
+                    }
                 } else {
-                    reject('error')
+                    resovle({
+                        'error': "userNotFound"
+                    })
                 }
             }
         } catch (error) {
@@ -296,12 +341,14 @@ const scrape = async (url, options) => {
 // ------------------ PREPARE HASHTAG UTL ---------------------- //
 const getTikTokByHashtag = async (hashtag, options) => {
 
+    console.log('fetching by hashtag.......')
     return new Promise(async (resovle, reject) => {
         try {
             const tiktok_hashtag = hashtag.replace('#', '')
 
-            if (options.number) {
-                options.count = options.number
+            // Hashtag not using count and cursor, used with the offset only
+            if (options?.offset) {
+                baseParamsHashTag.offset = options.offset * options.count
             }
 
             const cookie = await Cookie.findOne({ 
@@ -310,7 +357,7 @@ const getTikTokByHashtag = async (hashtag, options) => {
                 }
             })
 
-            // change the default value to fetch value
+            // // change the default value to fetch value
             baseParamsHashTag.keyword = tiktok_hashtag
             cookies.msToken = cookie.msToken
 
@@ -340,6 +387,8 @@ const getTikTokByAccount = async (account, options) => {
     return new Promise(async (resovle, reject) => {
         try {
             const tiktokAcc = account.replace('@', '')
+
+            // Account used with count and cursor, not using with offset
             if (options.count) {
                 // set post count
                 baseParamsAccount.listParams.count = options.count

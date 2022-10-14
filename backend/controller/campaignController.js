@@ -62,6 +62,7 @@ const store = asyncHnadler( async (req, res) => {
         videoCount: 0,
         offset: 0,
         cursor: 0,
+        hasMore: 0,
         collectionTypeId: collectionType,
         linkTypeId: linkType,
         visibility: 1,
@@ -91,6 +92,18 @@ const store = asyncHnadler( async (req, res) => {
 
             res.status(400).send({ error: { userNotFound: 'The user does not exist!' } })
             throw new Error('The user does not exist!')
+
+        } else if(result?.error && result.error === 'hashtagNotFound') {
+
+            // got error and delete campaign
+            Campaign.destroy({
+                where: {
+                  id: campaign.id
+                }
+            });
+
+            res.status(400).send({ error: { hashtagNotFound: 'No videos in this hashtag!' } })
+            throw new Error('No videos in this hashtag!')
         }
 
     } else {

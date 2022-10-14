@@ -70,6 +70,12 @@ const NewCampaign = (props) => {
                     message: t('error.userNotFound')
                 }
                 validateByEach('isErrorAccount', 'messageAccount', value)
+            } else if(message?.error?.hashtagNotFound) {
+                const value = {
+                    error: true,
+                    message: t('error.hashtagNotFound')
+                }
+                validateByEach('isErrorHashtag', 'messageHashtag', value)
             }
         }
 
