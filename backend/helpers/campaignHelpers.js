@@ -296,12 +296,13 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
             if(campaign.collectionTypeId === 1) {
                 // search by account and update, check the video count
                 const maxCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
-                if(maxCount < campaign.videoCount) {
+                if(maxCount < campaign.videoCount && campaign.videoCount >= process.env.TIKTOK_MAX_LAYOUT_COUNT) {
                     await searchByAccountAndUpdate(campaign)
                 }
             } else if(campaign.collectionTypeId === 2) {
-                // search by hashtag and update
-                if(campaign.hasMore) {
+                // search by hashtag and update, check video count
+                const videoCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
+                if(campaign.hasMore  && videoCount >= process.env.TIKTOK_MAX_LAYOUT_COUNT) {
                     await searchByHashtagAndUpdate(campaign)
                 }
             }
