@@ -9,21 +9,25 @@ const db = require('../models/index')
 
 // Create main Model
 const Cookie = db.cookies
-const Campaign = db.campaigns
 
 const jar = new CookieJar();
 const client = wrapper(axios.create({ jar }))
 const signer = new Signer()
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
-// const profileURL = 'https://www.tiktok.com/node/share/user/@'
-const searchProfileURL = 'https://www.tiktok.com/api/search/user/full/'
-const profileURL = 'https://www.tiktok.com/api/user/detail/'
-const tagURL = 'https://www.tiktok.com/node/share/tag/'
-const challengeURL = 'https://m.tiktok.com/api/challenge/item_list/'
-const searchURL = 'https://www.tiktok.com/api/search/general/full/'
-const videoURL = 'https://www.tiktok.com/api/post/item_list/'
 
+// ------------------ NOW USING ---------------------- //
+const profileURL = 'https://www.tiktok.com/api/user/detail/' // fetch profile URL
+const searchURL = 'https://www.tiktok.com/api/search/general/full/' // search with hashtag
+const videoURL = 'https://www.tiktok.com/api/post/item_list/' // profile videos
+// ------------------ NOW USING ---------------------- //
+
+// const profileURL = 'https://www.tiktok.com/node/share/user/@' // fetch profile old URL
+const searchProfileURL = 'https://www.tiktok.com/api/search/user/full/' // search profiles
+const tagURL = 'https://www.tiktok.com/node/share/tag/' // search with tag
+const challengeURL = 'https://m.tiktok.com/api/challenge/item_list/' // get hashtag videos
+
+// hashtag params
 const baseParamsHashTag = {
     'aid': '1988',
     "app_language": "en",
@@ -55,105 +59,107 @@ const baseParamsHashTag = {
     "webcast_language": "en",
 }
 
-const baseParamsProfile = {
-    'aid': '1988',
-    "app_language": "en",
-    "app_name": "tiktok_web",
-    "battery_info": 1,
-    "browser_language": "en",
-    "browser_name": "Mozilla",
-    "browser_online": true,
-    "browser_platform": "MacIntel",
-    "browser_version": '5.0(Macintosh; Intel Mac OS X 10 _15_7) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 105.0 .0 .0 Safari / 537.36',
-    "channel": "tiktok_web",
-    "cookie_enabled": true,
-    "device_id": "7146446193673094657",
-    "device_platform": "web_pc",
-    "focus_state": true,
-    "from_page": "search",
-    "history_len": 31,
-    "is_fullscreen": false,
-    "is_page_visible": true,
-    "keyword": "",
-    "cursor": 0, // pagination cursor
-    "count": 12, // increase the count for more videos
-    "os": "mac",
-    "priority_region": "",
-    "referer": "",
-    "region": "MM",
-    "screen_height": "1080",
-    "screen_width": "1920",
-    "tz_name": "Asia/Rangoon",
-    "webcast_language": "en",
+// Account params
+const baseParamsAccount = {
+    fakeParams : {
+        'aid': '1988',
+        "app_language": "en",
+        "app_name": "tiktok_web",
+        "battery_info": 1,
+        "browser_language": "en",
+        "browser_name": "Mozilla",
+        "browser_online": true,
+        "browser_platform": "MacIntel",
+        "browser_version": '5.0(Macintosh; Intel Mac OS X 10 _15_7) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 105.0 .0 .0 Safari / 537.36',
+        "channel": "tiktok_web",
+        "cookie_enabled": true,
+        "device_id": "7154229846167668226",
+        "device_platform": "web_pc",
+        "focus_state": true,
+        "from_page": "user",
+        "history_len": 14,
+        "is_fullscreen": false,
+        "is_page_visible": true,
+        "language": "en",
+        "os": "mac",
+        "priority_region": "",
+        "referer": "",
+        "region": "JP",
+        "screen_height": "1080",
+        "screen_width": "1920",
+        "tz_name": "Asia/Tokyo",
+        "webcast_language": "en",
+        "secUid": '',
+        "msToken": "DYFrhlxnTlZzh0sbMv39Iq_B-OcAIBwqlXvZtisYcV7rRSbTGoub9nlhGkYv7_kEb_ubxzlhrN9uzJDQxmfx2Rth4x_nv56rtTqO3FCi9MhC8YrDid86YVmySyRVHxbo88AJL0M="
+    },
+    profileParams : {
+        "app_language": "en",
+        "app_name": "tiktok_web",
+        "battery_info": 1,
+        "browser_language": "en",
+        "browser_name": "Mozilla",
+        "browser_online": true,
+        "browser_platform": "MacIntel",
+        "browser_version": '5.0(Macintosh; Intel Mac OS X 10 _15_7) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 105.0 .0 .0 Safari / 537.36',
+        "channel": "tiktok_web",
+        "cookie_enabled": true,
+        "device_id": "7154229846167668226",
+        "device_platform": "web_pc",
+        "focus_state": true,
+        "from_page": "user",
+        "history_len": 14,
+        "is_fullscreen": false,
+        "is_page_visible": true,
+        "language": "en",
+        "os": "mac",
+        "priority_region": "",
+        "referer": "",
+        "region": "JP",
+        "screen_height": "1080",
+        "screen_width": "1920",
+        "tz_name": "Asia/Tokyo",
+        "webcast_language": "en",
+    },
+    listParams : {
+        'aid': '1988',
+        "app_language": "en",
+        "app_name": "tiktok_web",
+        "battery_info": 1,
+        "browser_language": "en",
+        "browser_name": "Mozilla",
+        "browser_online": true,
+        "browser_platform": "MacIntel",
+        "browser_version": '5.0(Macintosh; Intel Mac OS X 10 _15_7) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 105.0 .0 .0 Safari / 537.36',
+        "channel": "tiktok_web",
+        "cookie_enabled": true,
+        "device_id": "7146446193673094657",
+        "device_platform": "web_pc",
+        "focus_state": true,
+        "from_page": "search",
+        "history_len": 31,
+        "is_fullscreen": false,
+        "is_page_visible": true,
+        "keyword": "",
+        "cursor": 0, // pagination cursor
+        "count": 12, // increase the count for more videos
+        "os": "mac",
+        "priority_region": "",
+        "referer": "",
+        "region": "MM",
+        "screen_height": "1080",
+        "screen_width": "1920",
+        "tz_name": "Asia/Rangoon",
+        "webcast_language": "en",
+    }
 }
 
-const profileParams = {
-    'aid': '1988',
-    "app_language": "en",
-    "app_name": "tiktok_web",
-    "battery_info": 1,
-    "browser_language": "en",
-    "browser_name": "Mozilla",
-    "browser_online": true,
-    "browser_platform": "MacIntel",
-    "browser_version": '5.0(Macintosh; Intel Mac OS X 10 _15_7) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 105.0 .0 .0 Safari / 537.36',
-    "channel": "tiktok_web",
-    "cookie_enabled": true,
-    "device_id": "7154229846167668226",
-    "device_platform": "web_pc",
-    "focus_state": true,
-    "from_page": "user",
-    "history_len": 14,
-    "is_fullscreen": false,
-    "is_page_visible": true,
-    "language": "en",
-    "os": "mac",
-    "priority_region": "",
-    "referer": "",
-    "region": "MM",
-    "screen_height": "1080",
-    "screen_width": "1920",
-    "tz_name": "Asia/Rangoon",
-    "webcast_language": "en",
-    "secUid": '',
-    "msToken": "DYFrhlxnTlZzh0sbMv39Iq_B-OcAIBwqlXvZtisYcV7rRSbTGoub9nlhGkYv7_kEb_ubxzlhrN9uzJDQxmfx2Rth4x_nv56rtTqO3FCi9MhC8YrDid86YVmySyRVHxbo88AJL0M="
-}
-
-const secondParams = {
-    "app_language": "en",
-    "app_name": "tiktok_web",
-    "battery_info": 1,
-    "browser_language": "en",
-    "browser_name": "Mozilla",
-    "browser_online": true,
-    "browser_platform": "MacIntel",
-    "browser_version": '5.0(Macintosh; Intel Mac OS X 10 _15_7) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 105.0 .0 .0 Safari / 537.36',
-    "channel": "tiktok_web",
-    "cookie_enabled": true,
-    "device_id": "7154229846167668226",
-    "device_platform": "web_pc",
-    "focus_state": true,
-    "from_page": "user",
-    "history_len": 14,
-    "is_fullscreen": false,
-    "is_page_visible": true,
-    "language": "en",
-    "os": "mac",
-    "priority_region": "",
-    "referer": "",
-    "region": "MM",
-    "screen_height": "1080",
-    "screen_width": "1920",
-    "tz_name": "Asia/Rangoon",
-    "webcast_language": "en",
-}
-
+// Cookies
 const cookies = {
     "ttwid": "1%7CgGyKcS6dRMVu4XUfcXkjr3VAQip-BTv8U-wXGr0uDJI%7C1665723957%7C85238a14e13bbde6d8efc37e6f338a4bfac4a3e66ace1fbf043c05db68db1e77; ",
     "msToken": "DYFrhlxnTlZzh0sbMv39Iq_B-OcAIBwqlXvZtisYcV7rRSbTGoub9nlhGkYv7_kEb_ubxzlhrN9uzJDQxmfx2Rth4x_nv56rtTqO3FCi9MhC8YrDid86YVmySyRVHxbo88AJL0M="
 }
 
-
+// Headers
 const headers = {
     'User-Agent': USER_AGENT,
     'Referer': 'https://www.tiktok.com/',
@@ -162,37 +168,7 @@ const headers = {
     'Access-Control-Allow-Origin': '*',
 }
 
-const scrape = async (url, options) => {
-
-    return new Promise(async (resovle, reject) => {
-
-        try {
-            const response = await client({
-                method: 'get',
-                headers: headers,
-                url: url,
-                withCredentials: true,
-            });
-    
-            if (options.type === 'hashtag') {
-                if('data' in response.data) {
-                    resovle(getResponse(response.data, options))
-                } else {
-                    reject('error')
-                }
-            } else if (options.type === 'account') {
-                if('itemList' in response.data) {
-                    resovle(getResponse(response.data, options))
-                } else {
-                    reject('error')
-                }
-            }
-        } catch (error) {
-            reject(error)
-        }
-    })
-}
-
+// ------------------ BEAUTIFY DATA ---------------------- //
 const getResponse = async (data, options) => {
 
     const resposne = {
@@ -282,7 +258,42 @@ const getResponse = async (data, options) => {
     return resposne
 
 }
+// ------------------ BEAUTIFY DATA ---------------------- //
 
+// ------------------ SCRAPE VIDEOS ---------------------- //
+const scrape = async (url, options) => {
+
+    return new Promise(async (resovle, reject) => {
+
+        try {
+            const response = await client({
+                method: 'get',
+                headers: headers,
+                url: url,
+                withCredentials: true,
+            });
+    
+            if (options.type === 'hashtag') {
+                if('data' in response.data) {
+                    resovle(getResponse(response.data, options))
+                } else {
+                    reject('error')
+                }
+            } else if (options.type === 'account') {
+                if('itemList' in response.data) {
+                    resovle(getResponse(response.data, options))
+                } else {
+                    reject('error')
+                }
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+// ------------------ SCRAPE VIDEOS ---------------------- //
+
+// ------------------ PREPARE HASHTAG UTL ---------------------- //
 const getTikTokByHashtag = async (hashtag, options) => {
 
     return new Promise(async (resovle, reject) => {
@@ -320,191 +331,137 @@ const getTikTokByHashtag = async (hashtag, options) => {
     })
 
 }
+// ------------------ PREPARE HASHTAG UTL ---------------------- //
 
+// ------------------ FETCH USER secUid AND PREPARE ACCOUNT URL ---------------------- //
 const getTikTokByAccount = async (account, options) => {
 
+    console.log('fetching by account.......')
     return new Promise(async (resovle, reject) => {
         try {
             const tiktokAcc = account.replace('@', '')
             if (options.count) {
-                baseParamsProfile.count = options.count
+                // set post count
+                baseParamsAccount.listParams.count = options.count
             }
 
             if(options.cursor) {
-                baseParamsProfile.cursor = options.cursor
+                // set pagination cursor
+                baseParamsAccount.listParams.cursor = options.cursor
             }
 
+            // get msToken from cookies table
             const cookie = await Cookie.findOne({ 
                 where: {
                     id: 1
                 }
             })
 
-            // ----------- Search and get secUid ---------- //
+            // ----------- Request Fake ---------- //
             // change the default value to fetch value
-            profileParams.uniqueId = tiktokAcc    
-            profileParams.msToken = cookie.msToken
+            baseParamsAccount.fakeParams.uniqueId = tiktokAcc    
+            baseParamsAccount.fakeParams.msToken = cookie.msToken
             cookie.msToken = cookie.msToken
 
-            const qsObject = new URLSearchParams(profileParams)
-            const qs = qsObject.toString()
-            const url = profileURL + `?` + qs
+            const qsObjectFake = new URLSearchParams(baseParamsAccount.fakeParams)
+            const qsFake = qsObjectFake.toString()
+            const urlFake = profileURL + `?` + qsFake
 
             await signer.init()
-            const signature = await signer.sign(url)
+            const signature = await signer.sign(urlFake)
+            await signer.close();
 
-            const res = await client({
+            const resFake = await client({
                 method: 'get',
                 headers: headers,
                 url: signature.signed_url,
                 withCredentials: true,
             });
 
-            console.log('search.........')
+            // ----------- Request Fake ---------- //
 
-            console.log('fetch.........')
-            secondParams.uniqueId = tiktokAcc 
+            // ----------- Request Profile ---------- //
+            baseParamsAccount.profileParams.uniqueId = tiktokAcc 
 
-            const qsObject2 = new URLSearchParams(secondParams)
-            const qs2 = qsObject2.toString()
-            const url2 = profileURL + `?` + qs2
+            const qsObjectProfile = new URLSearchParams(baseParamsAccount.profileParams)
+            const qsProfile = qsObjectProfile.toString()
+            const urlProfile = profileURL + `?` + qsProfile
 
-            const res2 = await client({
+            const resProfile = await client({
                 method: 'get',
                 headers: headers,
-                url: url2,
+                url: urlProfile,
                 withCredentials: true,
             });
 
-            console.log(res2.data.userInfo)
+            // ----------- Request Profile ---------- //
 
+            // generate the msToken from cookies
+            if(resProfile.data != '' && 'userInfo' in resProfile.data && resProfile?.data?.userInfo?.user ) {
 
-
-            // generate the msToken 
-            if(res2.config?.jar?.toJSON()) {
-                const responseCookies = res2.config.jar.toJSON().cookies;
-                const msToken = responseCookies.filter((c)=> {
-                    return c.key === 'msToken';
-                }).map(function(obj) {
-                    return obj.value;
-                });
-
-                const cookieData = {
-                    "msToken": msToken[0]
-                }
-
-                // update the msToken for next requests
-                await Cookie.update( cookieData, {
-                    where: {
-                        id: 1,
+                if(resProfile.config?.jar?.toJSON()) {
+                    const responseCookies = resProfile.config.jar.toJSON().cookies;
+                    const msToken = responseCookies.filter((c)=> {
+                        return c.key === 'msToken';
+                    }).map(function(obj) {
+                        return obj.value;
+                    });
+    
+                    const cookieData = {
+                        "msToken": msToken[0]
                     }
+    
+                    // update the msToken for next requests
+                    await Cookie.update( cookieData, {
+                        where: {
+                            id: 1,
+                        }
+                    })
+                }
+    
+                let secUid = ''
+                let videoCount = 0
+    
+                if( resProfile.data != '' && 'userInfo' in resProfile.data) {
+                    secUid = resProfile.data.userInfo.user.secUid
+                    videoCount = resProfile.data.userInfo.stats.videoCount
+    
+                    baseParamsAccount.listParams.secUid = secUid
+                    baseParamsAccount.listParams.count = options.count
+                    baseParamsAccount.listParams.cursor = options.cursor
+    
+                    const qsObjectList = new URLSearchParams(baseParamsAccount.listParams)
+                    const qsList = qsObjectList.toString()
+                    const urlList = videoURL + `?${qsList}`
+    
+                    const scrapeOptions = {
+                        type: 'account',
+                        offset: options.offset,
+                        videoCount: videoCount
+                    }
+                    const response = await scrape(urlList, scrapeOptions)
+                    resovle(response)
+    
+                } else {
+                    resovle({
+                        'error': "userNotFound"
+                    })
+                }
+            } else {
+                resovle({
+                    'error': "userNotFound"
                 })
             }
 
-            
-
-            // ----------- Search and get secUid ---------- //
-
-            // ----------- get user with secUid ---------- //
-            // if(res.data?.user_list) {
-
-            //     const sec_uid = res.data.user_list.filter((u) => {
-            //         return u.user_info?.unique_id === tiktokAcc
-            //     }).map((u) => {
-            //         return u?.user_info?.sec_uid
-            //     })
-
-            //     if(sec_uid.length > 0) {
-
-            //         const cookie = await Cookie.findOne({ 
-            //             where: {
-            //                 id: 1
-            //             }
-            //         })
-
-            //         profileParams.uniqueId = tiktokAcc    
-            //         profileParams.msToken = cookie.msToken
-            //         profileParams.secUid = sec_uid[0]
-            //         cookies.msToken = cookie.msToken
-
-            //         const qsObject = new URLSearchParams(profileParams)
-            //         const qs = qsObject.toString()
-            //         const url = profileURL + `?` + qs
-
-            //         const signature = await signer.sign(url)
-
-            //         const resUser = await client({
-            //             method: 'get',
-            //             headers: headers,
-            //             url: signature.signed_url,
-            //             withCredentials: true,
-            //         });
-
-            //         console.log('fetch.........')
-
-            //         console.log(resUser)
-
-            //     }
-
-            // }
-
-            // ----------- get user with secUid ---------- //
-
-            // generate the msToken 
-            // if(res.config?.jar?.toJSON()) {
-            //     const responseCookies = res.config.jar.toJSON().cookies;
-            //     const msToken = responseCookies.filter((c)=> {
-            //         return c.key === 'msToken';
-            //     }).map(function(obj) {
-            //         return obj.value;
-            //     });
-
-            //     const cookieData = {
-            //         "msToken": msToken[0]
-            //     }
-
-            //     // update the msToken for next requests
-            //     await Cookie.update( cookieData, {
-            //         where: {
-            //             id: 1,
-            //         }
-            //     })
-            // }
-
-            let secUid = ''
-            let videoCount = 0
-
-            // if( res.data != '' && 'userInfo' in res.data) {
-            //     secUid = res.data.userInfo.user.secUid
-            //     videoCount = res.data.userInfo.stats.videoCount
-
-            //     baseParamsProfile.secUid = secUid
-            //     baseParamsProfile.count = options.count
-            //     baseParamsProfile.cursor = options.cursor
-
-            //     const qsObject2 = new URLSearchParams(baseParamsProfile)
-            //     const qs2 = qsObject2.toString()
-            //     const url2 = videoURL + `?${qs2}`
-
-            //     const scrapeOptions = {
-            //         type: 'account',
-            //         offset: options.offset,
-            //         videoCount: videoCount
-            //     }
-            //     const response = await scrape(url2, scrapeOptions)
-
-            //     resovle(response)
-
-            // } else {
-            //     resovle('')
-            // }
         } catch (error) {
             console.log(error)
         }
     })
 
 }
+// ------------------ FETCH USER secUid AND PREPARE ACCOUNT URL ---------------------- //
 
+// object to string
 function objToString (obj) {
     return Object.entries(obj).reduce((str, [p, val]) => {
         return `${str}${p}=${val}`;

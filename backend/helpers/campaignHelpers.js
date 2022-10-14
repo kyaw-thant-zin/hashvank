@@ -11,6 +11,32 @@ const TiktokInfo = db.tiktokInfos
 const ApiSetting = db.apiSettings
 const LayoutContent = db.layoutContents
 
+// ------------------ HASHTAG ---------------------- //
+const getTikToksWithHastag = async (hashtag, tiktokCount) => {
+
+    return new Promise( async(resovle, reject) => {
+        const tiktok_hashtag = hashtag.replace('#', '');
+
+        try {
+
+            const posts = await getTikTokByHashtag(tiktok_hashtag, {
+                number: tiktokCount
+            })
+            
+            if(posts.collector?.length > 0) {
+                resovle(posts.collector)
+
+            }else {
+                reject(false)
+            }
+            
+        } catch (error) {
+            reject(false)
+        }
+
+        reject(false)
+    })
+}
 const searchByHashtagandUpdateLayoutType = asyncHnadler( async(campaign) => {
 
     // compare layout type
@@ -36,7 +62,6 @@ const searchByHashtagandUpdateLayoutType = asyncHnadler( async(campaign) => {
         }
     }
 })
-
 const searchByHashtagAndUpdate = async(campaign) => {
 
     return new Promise( async (resovle, reject) => {
@@ -63,7 +88,27 @@ const searchByHashtagAndUpdate = async(campaign) => {
     })
 
 }
+// ------------------ HASHTAG ---------------------- //
 
+// ------------------ ACCOUNT ---------------------- //
+const getTikToksWithAccount = async (account, options) => {
+
+    console.log('searching with account.....!')
+    return new Promise( async(resovle, reject) => {
+        const tiktok_account_name = account.replace('@', '');
+
+        try {
+
+            const posts = await getTikTokByAccount(tiktok_account_name, options)
+            resovle(posts)
+            
+        } catch (error) {
+            reject(error)
+        }
+
+        resovle(false)
+    })
+}
 const searchByAccountandUpdateLayoutType = asyncHnadler( async(campaign) => {
 
     // compare layout type
@@ -89,10 +134,7 @@ const searchByAccountandUpdateLayoutType = asyncHnadler( async(campaign) => {
         }
     }
 })
-
 const searchByAccountAndUpdate = async(campaign) => {
-
-    console.log('fetching by account......!')
 
     return new Promise( async (resovle, reject) => {
 
@@ -122,13 +164,11 @@ const searchByAccountAndUpdate = async(campaign) => {
             }
         })
 
-
-
         if(tiktoks.length > 0) {
             const tiktokInfoDataBeforeSort = bulkCreateTikToks(tiktoks, 'updateSchedule', tiktokInfoIds, campaign.id)
             if(tiktokInfoDataBeforeSort) {
                 const infos = await TiktokInfo.bulkCreate(tiktokInfoDataBeforeSort, { 
-                    updateOnDuplicate: [ 'videoId', 'account', 'hashtag', 'views', 'heart', 'comments', 'share', 'videoUrl', 'webVideoUrl', 'expiresIn',  ] 
+                    updateOnDuplicate: [ 'views', 'heart', 'comments', 'share', 'expiresIn',  ] 
                 }).then(infos => {
                     console.log('updated')
                     return infos
@@ -143,96 +183,9 @@ const searchByAccountAndUpdate = async(campaign) => {
     })
 
 }
+// ------------------ ACCOUNT ---------------------- //
 
-const tiktokUpdateOnSchedule = asyncHnadler( async () => {
-
-    console.log('updating.......!')
-
-    // run with schedule
-    const campaigns = await Campaign.findAll({
-        include: [ TiktokInfo, ApiSetting]
-    }).then(campaigns => {
-        return campaigns.map( campaign => campaign.get({ plain: true }) );
-    })
-
-    if(campaigns.length > 0) {
-
-        campaigns.forEach( async (campaign) => {
-            
-            const maxCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
-
-            if(maxCount < campaign.videoCount) {
-                if(campaign.collectionTypeId === 1) {
-                    // search by account and update
-                    await searchByAccountAndUpdate(campaign)
-                } else {
-                    // search by hashtag and update
-                    await searchByHashtagAndUpdate(campaign)
-                }
-            } else {
-
-            }
-
-        });
-
-    }
-    
-
-})
-
-const getTikToksWithHastag = async (hashtag, tiktokCount) => {
-
-    return new Promise( async(resovle, reject) => {
-        const tiktok_hashtag = hashtag.replace('#', '');
-
-        try {
-
-            const posts = await getTikTokByHashtag(tiktok_hashtag, {
-                number: tiktokCount
-            })
-            
-            if(posts.collector?.length > 0) {
-                resovle(posts.collector)
-
-            }else {
-                reject(false)
-            }
-            
-        } catch (error) {
-            reject(false)
-        }
-
-        reject(false)
-    })
-}
-
-const getTikToksWithAccount = async (account, options) => {
-
-    console.log('searching with account.....!')
-    return new Promise( async(resovle, reject) => {
-        const tiktok_account_name = account.replace('@', '');
-
-        try {
-
-            const posts = await getTikTokByAccount(tiktok_account_name, options)
-
-            if(posts.collector?.length > 0) {
-                resovle(posts)
-
-            }else {
-                resovle(false)
-            }
-            
-        } catch (error) {
-            reject(false)
-        }
-
-        resovle(false)
-    })
-    
-
-}
-
+// sort
 function sortByViews( a, b ) {
     if ( Number(a.views) < Number(b.views) ){
       return 1;
@@ -243,6 +196,8 @@ function sortByViews( a, b ) {
     return 0;
 }
 
+// ------------------ STORE ---------------------- //
+// Store the datas
 const storeDataInAllRequiredTables = asyncHnadler( async (result, campaignId, campaignUUId) => {
 
     const tiktoks = result.collector
@@ -304,8 +259,116 @@ const storeDataInAllRequiredTables = asyncHnadler( async (result, campaignId, ca
         return false
     }
 })
+// ------------------ STORE ---------------------- //
 
+// ------------------ UPDATE ---------------------- //
+// Update by Schedule
+const tiktokUpdateOnSchedule = asyncHnadler( async () => {
 
+    console.log('updating.......!')
+
+    // run with schedule
+    const campaigns = await Campaign.findAll({
+        include: [ TiktokInfo, ApiSetting]
+    }).then(campaigns => {
+        return campaigns.map( campaign => campaign.get({ plain: true }) );
+    })
+
+    if(campaigns.length > 0) {
+
+        campaigns.forEach( async (campaign) => {
+            
+            const maxCount = campaign.offset * process.env.TIKTOK_LAYOUT_COUNT
+
+            if(maxCount < campaign.videoCount) {
+                if(campaign.collectionTypeId === 1) {
+                    // search by account and update
+                    await searchByAccountAndUpdate(campaign)
+                } else {
+                    // search by hashtag and update
+                    await searchByHashtagAndUpdate(campaign)
+                }
+            } else {
+
+            }
+
+        });
+    }
+})
+
+// update the tiktoks every 1 hour
+const updateTiktoksBySchedule = () => {
+    // will fire every 1 hour
+    const textSched = later.parse.text(`${process.env.TIKTOK_SCHEDULE_CRON}`)
+    const cron = later.setInterval(tiktokUpdateOnSchedule, textSched)
+}
+// ------------------ UPDATE ---------------------- //
+
+// ------------------ CREATE ---------------------- //
+const storeTikToksInAllTables = async (campaign) => {
+
+    return new Promise( async(resovle, reject) => {
+
+        let tiktokCount = process.env.TIKTOK_LAYOUT_COUNT || 12
+    
+        if(campaign.collectionTypeId === 1) { // 1 === account
+            const tiktokOptions = {
+                count: tiktokCount,
+                offset: campaign.offset,
+                cursor: campaign.cursor
+            }
+            try {
+                const result = await getTikToksWithAccount(campaign.account, tiktokOptions)
+                if(!result?.error) {
+                    const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
+                    if(stored) {
+                        resovle(true) 
+                    }
+                } else {
+                    resovle(result)
+                }
+            } catch (error) {
+                reject(error)
+            }
+        }else if(campaign.collectionTypeId === 2) { // 2 === hastag
+            const tiktokOptions = {
+                count: tiktokCount,
+                offset: campaign.offset,
+                cursor: campaign.cursor
+            }
+            const result = await getTikToksWithHastag(campaign.hashtag, tiktokOptions)
+            const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
+            if(stored) {
+                resovle(true) 
+            }
+        }
+
+    })
+
+}
+// ------------------ CREATE ---------------------- //
+
+const updateTiktoksInAllTables = async (campaign) => {
+
+    return new Promise( async(resovle, reject) => {
+    
+        if(campaign.collectionTypeId === 1) { // 1 === account
+            const result = await searchByAccountAndUpdate(campaign)
+            if(result) {
+                resovle(true) 
+            }
+        }else if(campaign.collectionTypeId === 2) { // 2 === hastag
+            const result = await searchByHashtagAndUpdate(campaign)
+            if(result) {
+                resovle(true) 
+            }
+        }
+    
+        reject(false)
+    })
+}
+
+// ------------------ PREPARE DATA ---------------------- //
 // create an array for create or update tiktokInfos
 const bulkCreateTikToks = (tiktoks, state, tiktokInfoIds, campaignId) => {
 
@@ -370,7 +433,7 @@ const bulkCreateTikToks = (tiktoks, state, tiktokInfoIds, campaignId) => {
 
     return tiktokBulkCreateRows
 }
-
+// ------------------ PREPARE DATA ---------------------- //
 
 // Generate JWT
 const generateApiToken = (uuid) => {
@@ -379,81 +442,21 @@ const generateApiToken = (uuid) => {
     })
 }
 
-
-const storeTikToksInAllTables = async (campaign) => {
-
-    return new Promise( async(resovle, reject) => {
-
-        let tiktokCount = process.env.TIKTOK_LAYOUT_COUNT || 12
-    
-        if(campaign.collectionTypeId === 1) { // 1 === account
-            const tiktokOptions = {
-                count: tiktokCount,
-                offset: campaign.offset,
-                cursor: campaign.cursor
-            }
-            try {
-                const result = await getTikToksWithAccount(campaign.account, tiktokOptions)
-                if(result) {
-                    const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
-                    if(stored) {
-                        resovle(true) 
-                    }
-                } else {
-                    reject('error')
-                }
-            } catch (error) {
-                reject(error)
-            }
-        }else if(campaign.collectionTypeId === 2) { // 2 === hastag
-            const tiktokOptions = {
-                count: tiktokCount,
-                offset: campaign.offset,
-                cursor: campaign.cursor
-            }
-            const result = await getTikToksWithHastag(campaign.hashtag, tiktokOptions)
-            const stored = storeDataInAllRequiredTables(result, campaign.id, campaign.uuid)
-            if(stored) {
-                resovle(true) 
-            }
-        }
-    
-        reject(false)
-    })
-
-}
-
-const updateTiktoksInAllTables = async (campaign) => {
-
-    return new Promise( async(resovle, reject) => {
-    
-        if(campaign.collectionTypeId === 1) { // 1 === account
-            const result = await searchByAccountAndUpdate(campaign)
-            if(result) {
-                resovle(true) 
-            }
-        }else if(campaign.collectionTypeId === 2) { // 2 === hastag
-            const result = await searchByHashtagAndUpdate(campaign)
-            if(result) {
-                resovle(true) 
-            }
-        }
-    
-        reject(false)
-    })
-}
-
-// update the tiktoks every 1 hour
-const updateTiktoksBySchedule = () => {
-    // will fire every 1 hour
-    const textSched = later.parse.text(`${process.env.TIKTOK_SCHEDULE_CRON}`)
-    const cron = later.setInterval(tiktokUpdateOnSchedule, textSched)
-}
-
 module.exports = {
     storeTikToksInAllTables,
     updateTiktoksInAllTables,
     updateTiktoksBySchedule,
     searchByHashtagandUpdateLayoutType,
-    searchByAccountandUpdateLayoutType
+    searchByAccountandUpdateLayoutType,
+    tiktokUpdateOnSchedule
 }
+
+/**** ------------- FLOWS --------------- *** 
+Creating
+Campaign Store -> storeTikToksInAllTables -> getTikToksWithAccount -> storeDataInAllRequiredTables
+                                          -> getTikToksWithHastag -> storeDataInAllRequiredTables
+
+Updating by Schedule
+Schedule -> updateTiktoksBySchedule -> tiktokUpdateOnSchedule -> searchByAccountAndUpdate
+                                                              -> searchByHashtagAndUpdate
+*/

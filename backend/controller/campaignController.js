@@ -1,5 +1,5 @@
 const asyncHnadler = require('express-async-handler')
-const { storeTikToksInAllTables, updateTiktoksInAllTables } = require('../helpers/campaignHelpers')
+const { storeTikToksInAllTables, updateTiktoksInAllTables, tiktokUpdateOnSchedule } = require('../helpers/campaignHelpers')
 const db = require('../models/index')
 
 // Create main Model
@@ -43,12 +43,6 @@ const store = asyncHnadler( async (req, res) => {
 
     const { campaignName, collectionType, account, hashtag, linkType, userId } = req.body
 
-    // return when choose the account type
-    // if(collectionType === 1) {
-    //     res.status(400).send({ error: { functionNotExists: 'This Collection Type is not available yet!' } })
-    //     throw new Error('This Collection Type is not available yet!')
-    // }
-
     if(!campaignName || !collectionType || !linkType || !userId) {
         res.status(400).send({ error: { required: 'Please add all fields' } })
         throw new Error('Please add all fields')
@@ -82,19 +76,28 @@ const store = asyncHnadler( async (req, res) => {
 
         const result = await storeTikToksInAllTables(campaign)
 
-        if(result) {
+        if(result === true) {
             res.status(201).send({success: {
                 stored: `The ${campaign.campaignName} was successfully created!`
             }})
-        } else {
-            res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
-            throw new Error('Invalid campaign data')
+        } else if(result?.error && result.error === 'userNotFound') {
+
+            // got error and delete campaign
+            Campaign.destroy({
+                where: {
+                  id: campaign.id
+                }
+            });
+
+            res.status(400).send({ error: { userNotFound: 'The user does not exist!' } })
+            throw new Error('The user does not exist!')
         }
 
     } else {
         res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
         throw new Error('Invalid campaign data')
     }
+
 })
 
 // @desc GET campaign

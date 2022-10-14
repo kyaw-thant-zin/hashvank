@@ -7,7 +7,8 @@
       "agree": "Please agree with Terms & Conditions.",
       "username": "Username can only include letters, numbers, underscores and periods.",
       "emailExists": "The email is already in use.",
-      "userExists": "The Username has already been taken."
+      "userExists": "The Username has already been taken.",
+      "userNotFound": "The user does not exist!"
     },
     "message": {
       "campaignStored": "The new campaign was successfully created!",

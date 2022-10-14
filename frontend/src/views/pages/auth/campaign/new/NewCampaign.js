@@ -61,9 +61,15 @@ const NewCampaign = (props) => {
             if(message?.error?.camapignExists) {
                 const value = {
                     error: true,
-                    message: message?.error?.camapignExists
+                    message: t('error.userExists')
                 }
                 validateByEach('isErrorCampaignName', 'messageCampaignName', value)
+            } else if(message?.error?.userNotFound) {
+                const value = {
+                    error: true,
+                    message: t('error.userNotFound')
+                }
+                validateByEach('isErrorAccount', 'messageAccount', value)
             }
         }
 
@@ -298,7 +304,9 @@ const NewCampaign = (props) => {
         {
 
             isError ? (
-                <AlertCop severity="error" open={isError} message={message?.error?.required || message?.error?.camapignExists || message?.error?.invalid || message?.error?.functionNotExists } />
+                <AlertCop severity="error" open={isError} message={
+                    message?.error?.required || message?.error?.camapignExists || message?.error?.invalid || message?.error?.functionNotExists || message?.error?.userNotFound 
+                } />
             ) : ''
         }
       <Layout>
