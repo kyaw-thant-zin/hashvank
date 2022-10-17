@@ -13,6 +13,7 @@ import campaignReducer from '../features/campaign/CampaignSlice';
 import collectionTypeReducer from '../features/collectionType/collectionTypeSlice';
 import linkTypeReducer from '../features/linkType/linkTypeSlice';
 import campaignOutputReducer from '../features/campaignOutput/campaignOutputSlice'
+import linkSettingReducer from '../features/linkSetting/linkSettingSlice'
 
 // STORE THE USER INFO
 const persistConfig = {
@@ -34,6 +35,7 @@ export const store = configureStore({
     linkType: linkTypeReducer,
     campaign: campaignPersistedReducer,
     campaignOutput: campaignOutputReducer,
+    linkSetting: linkSettingReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

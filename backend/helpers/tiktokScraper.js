@@ -16,6 +16,10 @@ const signer = new Signer()
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
 
+// ------------------ REPORT msToken ---------------------- //
+const reportURL = 'https://mssdk-sg.tiktok.com/web/report'
+// ------------------ REPORT msToken ---------------------- //
+
 // ------------------ NOW USING ---------------------- //
 const profileURL = 'https://www.tiktok.com/api/user/detail/' // fetch profile URL
 const searchURL = 'https://www.tiktok.com/api/search/general/full/' // search with hashtag
@@ -90,7 +94,9 @@ const baseParamsAccount = {
         "tz_name": "Asia/Tokyo",
         "webcast_language": "en",
         "secUid": '',
-        "msToken": "DYFrhlxnTlZzh0sbMv39Iq_B-OcAIBwqlXvZtisYcV7rRSbTGoub9nlhGkYv7_kEb_ubxzlhrN9uzJDQxmfx2Rth4x_nv56rtTqO3FCi9MhC8YrDid86YVmySyRVHxbo88AJL0M="
+        // "X-Bogus": 'DFSzsIVOPw0ANx/nSMouTgXCIsrW',
+        // "_signature": '_02B4Z6wo00001T3wAPwAAIDDXnrAf.7nK4098QRAACw008',
+        "msToken": ""
     },
     profileParams : {
         "app_language": "en",
@@ -156,7 +162,6 @@ const baseParamsAccount = {
 // Cookies
 const cookies = {
     "ttwid": "1%7CgGyKcS6dRMVu4XUfcXkjr3VAQip-BTv8U-wXGr0uDJI%7C1665723957%7C85238a14e13bbde6d8efc37e6f338a4bfac4a3e66ace1fbf043c05db68db1e77; ",
-    "msToken": "DYFrhlxnTlZzh0sbMv39Iq_B-OcAIBwqlXvZtisYcV7rRSbTGoub9nlhGkYv7_kEb_ubxzlhrN9uzJDQxmfx2Rth4x_nv56rtTqO3FCi9MhC8YrDid86YVmySyRVHxbo88AJL0M="
 }
 
 // Headers
@@ -166,6 +171,75 @@ const headers = {
     'Cookie': objToString(cookies),
     'Content-Type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin': '*',
+}
+
+
+const refreshMsToken = async () => {
+    return new Promise(async (resovle, reject) => {
+
+        try {
+            
+            // get msToken from cookies table
+            const cookie = await Cookie.findOne({ 
+                where: {
+                    id: 1
+                }
+            })
+
+            const params = {
+                'msToken': cookie.msToken
+            }
+
+            const qsObject = new URLSearchParams(params)
+            const qs = qsObject.toString()
+            let url = reportURL + `?` + qs
+
+            await signer.init()
+            const signature = await signer.sign(url)
+            await signer.close();
+
+            params['X-bogus'] = signature['x-bogus']
+            const qsObjectNew = new URLSearchParams(params)
+            const qsNew = qsObjectNew.toString()
+            url = reportURL + `?` + qsNew
+
+            const response = await client({
+                method: 'post',
+                headers: headers,
+                url: url,
+                withCredentials: true,
+            });
+
+            // Store the msToken
+            if(response.config?.jar?.toJSON()) {
+                const responseCookies = response.config.jar.toJSON().cookies;
+                const msToken = responseCookies.filter((c)=> {
+                    return c.key === 'msToken';
+                }).map(function(obj) {
+                    return obj.value;
+                });
+
+                if(msToken.length > 0) {
+                    const cookieData = {
+                        "msToken": msToken[0]
+                    }
+    
+                    // update the msToken for next requests
+                    await Cookie.update( cookieData, {
+                        where: {
+                            id: 1,
+                        }
+                    })
+                }
+
+                resovle(true)
+            }
+
+        } catch (error) {
+            reject(error)
+        }
+
+    })
 }
 
 // ------------------ BEAUTIFY DATA ---------------------- //
@@ -284,27 +358,27 @@ const scrape = async (url, options) => {
             });
 
             // Store the msToken
-            if(response.config?.jar?.toJSON()) {
-                const responseCookies = response.config.jar.toJSON().cookies;
-                const msToken = responseCookies.filter((c)=> {
-                    return c.key === 'msToken';
-                }).map(function(obj) {
-                    return obj.value;
-                });
+            // if(response.config?.jar?.toJSON()) {
+            //     const responseCookies = response.config.jar.toJSON().cookies;
+            //     const msToken = responseCookies.filter((c)=> {
+            //         return c.key === 'msToken';
+            //     }).map(function(obj) {
+            //         return obj.value;
+            //     });
 
-                if(msToken.length > 0) {
-                    const cookieData = {
-                        "msToken": msToken[0]
-                    }
+            //     if(msToken.length > 0) {
+            //         const cookieData = {
+            //             "msToken": msToken[0]
+            //         }
     
-                    // update the msToken for next requests
-                    await Cookie.update( cookieData, {
-                        where: {
-                            id: 1,
-                        }
-                    })
-                }
-            }
+            //         // update the msToken for next requests
+            //         await Cookie.update( cookieData, {
+            //             where: {
+            //                 id: 1,
+            //             }
+            //         })
+            //     }
+            // }
     
             if (options.type === 'hashtag') {
                 if(response.data != '') {
@@ -363,7 +437,6 @@ const getTikTokByHashtag = async (hashtag, options) => {
 
             // // change the default value to fetch value
             baseParamsHashTag.keyword = tiktok_hashtag
-            cookies.msToken = cookie.msToken
 
             const qsObject = new URLSearchParams(baseParamsHashTag)
             const qs = qsObject.toString()
@@ -390,6 +463,10 @@ const getTikTokByAccount = async (account, options) => {
     console.log('fetching by account.......')
     return new Promise(async (resovle, reject) => {
         try {
+
+            // refresh the msToken for request the profile
+            await refreshMsToken();
+
             const tiktokAcc = account.replace('@', '')
 
             // Account used with count and cursor, not using with offset
@@ -412,9 +489,7 @@ const getTikTokByAccount = async (account, options) => {
 
             // ----------- Request Fake ---------- //
             // change the default value to fetch value
-            baseParamsAccount.fakeParams.uniqueId = tiktokAcc    
-            baseParamsAccount.fakeParams.msToken = cookie.msToken
-            cookie.msToken = cookie.msToken
+            baseParamsAccount.fakeParams.uniqueId = tiktokAcc 
 
             const qsObjectFake = new URLSearchParams(baseParamsAccount.fakeParams)
             const qsFake = qsObjectFake.toString()
@@ -424,12 +499,28 @@ const getTikTokByAccount = async (account, options) => {
             const signature = await signer.sign(urlFake)
             await signer.close();
 
+            baseParamsAccount.fakeParams.msToken = cookie.msToken
+            baseParamsAccount.fakeParams['X-bogus'] = signature['x-bogus']
+            baseParamsAccount.fakeParams['_signature'] = signature['_signature']
+
+            const qsObjectFake2 = new URLSearchParams(baseParamsAccount.fakeParams)
+            const qsFake2 = qsObjectFake2.toString()
+            const urlFake2 = profileURL + `?` + qsFake2
+
+
             const resFake = await client({
                 method: 'get',
                 headers: headers,
-                url: signature.signed_url,
+                url: urlFake2,
                 withCredentials: true,
-            });
+            })
+
+            // check request is not success or not
+            if(resFake.data.statusCode < 0) {
+                resovle({
+                    'error': "userNotFound"
+                })
+            }
 
             // ----------- Request Fake ---------- //
 
@@ -449,28 +540,7 @@ const getTikTokByAccount = async (account, options) => {
 
             // ----------- Request Profile ---------- //
 
-            // generate the msToken from cookies
             if(resProfile.data != '' && 'userInfo' in resProfile.data && resProfile?.data?.userInfo?.user ) {
-
-                if(resProfile.config?.jar?.toJSON()) {
-                    const responseCookies = resProfile.config.jar.toJSON().cookies;
-                    const msToken = responseCookies.filter((c)=> {
-                        return c.key === 'msToken';
-                    }).map(function(obj) {
-                        return obj.value;
-                    });
-    
-                    const cookieData = {
-                        "msToken": msToken[0]
-                    }
-    
-                    // update the msToken for next requests
-                    await Cookie.update( cookieData, {
-                        where: {
-                            id: 1,
-                        }
-                    })
-                }
     
                 let secUid = ''
                 let videoCount = 0
@@ -524,5 +594,6 @@ function objToString (obj) {
 
 module.exports = {
     getTikTokByHashtag,
-    getTikTokByAccount
+    getTikTokByAccount,
+    refreshMsToken
 }

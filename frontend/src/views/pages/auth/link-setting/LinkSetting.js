@@ -9,6 +9,9 @@ import { Link } from "react-router-dom";
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
 
+// SLICE
+import { index } from "../../../../features/linkSetting/linkSettingSlice";
+
 // THEME
 import {theme} from "../../../layout/Theme";
 import Layout from '../../../layout/auth/Layout';
@@ -28,8 +31,7 @@ const LinkSetting = () => {
 
     const dispatch = useDispatch()
   
-    // const { linkSettings } = useSelector((state) => state.linkSetting)
-    const { linkSettings } = ''
+    const { linkSettings } = useSelector((state) => state.linkSetting)
     const [tableRows, setTableRows] = React.useState([])
   
     // CSV IMPORT
@@ -112,8 +114,39 @@ const LinkSetting = () => {
     } 
   
     // FETCH LINKSETTINGS
+    React.useEffect(() => {
+
+      dispatch(index())
+  
+    }, [dispatch])
   
     // SET THE LINKSETTING TABLE ROWS
+    React.useEffect(() => {
+
+      if(linkSettings) {
+        if(linkSettings.length > 0) {
+  
+          const linkSettingTableRows = linkSettings.map((lS) => {
+    
+            const row = {
+              id: lS.id,
+              campaignName: lS?.tiktokInfo?.campaign?.campaignName,
+              hashtag: lS.hashtag,
+              img: lS.imageUrl,
+              title: lS.title,
+              pageUrl: lS.pageUrl
+            }
+    
+            return row
+    
+          })
+    
+          setTableRows(linkSettingTableRows)
+    
+        }
+      }
+  
+    }, [linkSettings, setTableRows])
   
     // TABLE HEADER
     const columns = [

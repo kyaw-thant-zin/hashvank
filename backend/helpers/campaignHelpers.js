@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const moment = require('moment')
 const later = require('@breejs/later')
 
-const { getTikTokByHashtag, getTikTokByAccount } = require('../helpers/tiktokScraper')
+const { getTikTokByHashtag, getTikTokByAccount, refreshMsToken } = require('../helpers/tiktokScraper')
 
 const Campaign = db.campaigns
 const TiktokInfo = db.tiktokInfos
@@ -306,8 +306,6 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
                     await searchByHashtagAndUpdate(campaign)
                 }
             }
-            
-
         });
     }
 })
@@ -317,6 +315,10 @@ const updateTiktoksBySchedule = () => {
     // will fire every 1 hour
     const textSched = later.parse.text(`${process.env.TIKTOK_SCHEDULE_CRON}`)
     const cron = later.setInterval(tiktokUpdateOnSchedule, textSched)
+
+    // will fire every 30 Minutes
+    const textSchedForMsToken = later.parse.text(`${process.env.TIKTOK_MSTOKEN_CRON}`)
+    const cronMsToken = later.setInterval(refreshMsToken, textSchedForMsToken)
 }
 // ------------------ UPDATE ---------------------- //
 
