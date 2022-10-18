@@ -12,7 +12,6 @@ const Cookie = db.cookies
 
 const jar = new CookieJar();
 const client = wrapper(axios.create({ jar }))
-const signer = new Signer()
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
 
@@ -178,6 +177,8 @@ const refreshMsToken = async () => {
     return new Promise(async (resovle, reject) => {
 
         try {
+
+            console.log('run refresh msToken.....!')
             
             // get msToken from cookies table
             const cookie = await Cookie.findOne({ 
@@ -194,6 +195,7 @@ const refreshMsToken = async () => {
             const qs = qsObject.toString()
             let url = reportURL + `?` + qs
 
+            const signer = new Signer()
             await signer.init()
             const signature = await signer.sign(url)
             await signer.close();
@@ -495,6 +497,7 @@ const getTikTokByAccount = async (account, options) => {
             const qsFake = qsObjectFake.toString()
             const urlFake = profileURL + `?` + qsFake
 
+            const signer = new Signer()
             await signer.init()
             const signature = await signer.sign(urlFake)
             await signer.close();
@@ -595,5 +598,4 @@ function objToString (obj) {
 module.exports = {
     getTikTokByHashtag,
     getTikTokByAccount,
-    refreshMsToken
 }

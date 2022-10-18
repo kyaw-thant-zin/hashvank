@@ -312,11 +312,14 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
 
 // update the tiktoks every 1 hour
 const updateTiktoksBySchedule = () => {
+
+    console.log('run cron by schedule.....!')
+
     // will fire every 1 hour
     const textSched = later.parse.text(`${process.env.TIKTOK_SCHEDULE_CRON}`)
     const cron = later.setInterval(tiktokUpdateOnSchedule, textSched)
 
-    // will fire every 30 Minutes
+    // will fire every 30 minutes
     const textSchedForMsToken = later.parse.text(`${process.env.TIKTOK_MSTOKEN_CRON}`)
     const cronMsToken = later.setInterval(refreshMsToken, textSchedForMsToken)
 }

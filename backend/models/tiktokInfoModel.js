@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         videoId: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: 'videoId'
         },
         account: {
             type: DataTypes.STRING,
