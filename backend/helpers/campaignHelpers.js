@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const moment = require('moment')
 const later = require('@breejs/later')
 
-const { getTikTokByHashtag, getTikTokByAccount, refreshMsToken } = require('../helpers/tiktokScraper')
+const { getTikTokByHashtag, getTikTokByAccount, refreshMsToken, getSingleVideo } = require('../helpers/tiktokScraper')
 
 const Campaign = db.campaigns
 const TiktokInfo = db.tiktokInfos
@@ -103,6 +103,19 @@ const searchByHashtagAndUpdate = async(campaign) => {
     })
 
 }
+const updateVideoURLByAccount = async (campaign) => {
+    return new Promise(async (resovle, reject) => {
+        const tiktoks = campaign.tiktokInfos
+        if(tiktoks.length > 0) {
+            tiktoks.forEach( async (tiktok) => {
+                
+                // get video meta
+                const newVideoMeta = await getSingleVideo(tiktok.account, tiktok.videoId)
+
+            })
+        }
+    })
+}
 // ------------------ HASHTAG ---------------------- //
 
 // ------------------ ACCOUNT ---------------------- //
@@ -196,6 +209,11 @@ const searchByAccountAndUpdate = async(campaign) => {
         }
     })
 
+}
+const updateVideoURLByHashtag = async (campaign) => {
+    return new Promise(async (resovle, reject) => {
+        
+    })
 }
 // ------------------ ACCOUNT ---------------------- //
 
@@ -310,18 +328,49 @@ const tiktokUpdateOnSchedule = asyncHnadler( async () => {
     }
 })
 
+const tiktokVideoURLUpdateOnSchedule = asyncHnadler( async () => {
+
+    console.log('updating video URL.......!')
+
+    // run with schedule
+    const campaigns = await Campaign.findAll({
+        include: [TiktokInfo]
+    }).then(campaigns => {
+        return campaigns.map( campaign => campaign.get({ plain: true }) );
+    })
+
+    if(campaigns.length > 0) {
+
+        campaigns.forEach( async (campaign) => {
+
+            if(campaign.collectionTypeId === 1) {
+                // search by account and update
+                await updateVideoURLByAccount(campaign)
+            } else if(campaign.collectionTypeId === 2) {
+                // search by hashtag and update
+                await updateVideoURLByHashtag(campaign)
+            }
+        });
+    }
+})
+
 // update the tiktoks every 1 hour
 const updateTiktoksBySchedule = () => {
 
     console.log('run cron by schedule.....!')
 
-    // will fire every 1 hour
+    // will fire every 1 hour - fetch new tiktok videos on every 1 hour later
     const textSched = later.parse.text(`${process.env.TIKTOK_SCHEDULE_CRON}`)
     const cron = later.setInterval(tiktokUpdateOnSchedule, textSched)
 
-    // will fire every 30 minutes
+    // will fire every 30 minutes - update msToken every 30 minutes 
     const textSchedForMsToken = later.parse.text(`${process.env.TIKTOK_MSTOKEN_CRON}`)
     const cronMsToken = later.setInterval(refreshMsToken, textSchedForMsToken)
+
+    // will fire every 4 hours - update tiktok video URL on every 4 hours | tiktok video URL will expires on 5 hours later
+    const textSchedForVideoURL = later.parse.text(`${process.env.TIKTOK_VIDEO_URL_CRON}`)
+    const cronVideoURL = later.setInterval(tiktokVideoURLUpdateOnSchedule, textSchedForVideoURL)
+
 }
 // ------------------ UPDATE ---------------------- //
 
@@ -473,7 +522,9 @@ module.exports = {
     updateTiktoksBySchedule,
     searchByHashtagandUpdateLayoutType,
     searchByAccountandUpdateLayoutType,
-    tiktokUpdateOnSchedule
+    // UPDATE TEST
+    tiktokUpdateOnSchedule,
+    tiktokVideoURLUpdateOnSchedule
 }
 
 /**** ------------- FLOWS --------------- *** 

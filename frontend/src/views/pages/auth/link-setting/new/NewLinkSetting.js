@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
 
+// SLICE
+import { getTiktoksOfCampaign, store, selectCampaignReset, reset, index } from "../../../../../features/linkSetting/linkSettingSlice"; 
+
 // HELPER
 import Validation from '../../../../../common/FormValidation';
 
@@ -29,11 +32,9 @@ const NewCampaign = (props) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // const { campaigns } = useSelector((state) => state.campaign)
-    const { campaigns } = ''
+    const { campaigns } = useSelector((state) => state.campaign)
 
-    // const { tiktokOfCampaign, isCreated, isError, isLoading, message } = useSelector((state) => state.linkSetting)
-    const { tiktokOfCampaign, isCreated, isError, isLoading, message } = ''
+    const { tiktokOfCampaign, isCreated, isError, isLoading, message } = useSelector((state) => state.linkSetting)
 
     const [campaignSelect, setCampaignSelect] = React.useState('')
     const [tiktokSelect, setTiktokSelect] = React.useState('')
@@ -61,18 +62,46 @@ const NewCampaign = (props) => {
 
     // change collectionType to menu items
     const campaignMenuItems = []
-    // if(campaigns.length > 0) {
-    //     const unUsedCt = campaigns.map((cp) => {
-    //         campaignMenuItems.push({ name: cp.campaignName, value: cp.id })
-    //     })
-    // }
+    if(campaigns.length > 0) {
+        const unUsedCt = campaigns.map((cp) => {
+            campaignMenuItems.push({ name: cp.campaignName, value: cp.id })
+        })
+    }
 
     // fetch the campaigns
+    React.useEffect(() => {
 
+        dispatch(selectCampaignReset())
+
+        if(isCreated) {
+            const timer = setTimeout(() => {
+                dispatch(reset())
+                resetForm()
+                navigate('/link-setting')
+            }, 300);
+
+
+            return () => clearTimeout(timer);
+
+        }
+
+    }, [ dispatch, navigate, isCreated])
+
+    // fetch the campaigns
+    React.useEffect(()=> {
+
+        dispatch(index())
+
+        // set tiktoks of selected campaign
+        if(tiktokOfCampaign.length > 0 && campaignSelect !== '') {
+            setTiktoksOfCampaign(tiktokOfCampaign)
+        }
+
+    }, [dispatch, setTiktoksOfCampaign, tiktokOfCampaign, campaignSelect])
 
     const handleChangeCampaign = (event) => {
         setCampaignSelect(event.target.value)
-        // dispatch(getTiktoksOfCampaign(event.target.value))
+        dispatch(getTiktoksOfCampaign(event.target.value))
         setFormData((prevState) => ({
             ...prevState,
             [event.target.name]: event.target.value,
@@ -118,7 +147,7 @@ const NewCampaign = (props) => {
         const validationRes = validateForm(campaignId, tiktokId, hashtag, imageUrl, title, pageUrl)
         if(validationRes) {
             // store the linkSetting
-            // dispatch(store(formData))
+            dispatch(store(formData))
         }
     }
 

@@ -5,6 +5,7 @@ const axios = require('axios')
 const { wrapper } = require('axios-cookiejar-support')
 const { config } = require('dotenv')
 const { CookieJar } = require('tough-cookie')
+const cheerio = require('cheerio')
 const db = require('../models/index')
 
 // Create main Model
@@ -24,6 +25,11 @@ const profileURL = 'https://www.tiktok.com/api/user/detail/' // fetch profile UR
 const searchURL = 'https://www.tiktok.com/api/search/general/full/' // search with hashtag
 const videoURL = 'https://www.tiktok.com/api/post/item_list/' // profile videos
 // ------------------ NOW USING ---------------------- //
+
+// ------------------ SIGNLE VIDEO ---------------------- //
+const singleVideoURL = 'https://www.tiktok.com/node/share/video/' // https://www.tiktok.com/node/share/video/${videoUsername}/${videoId}
+const singleVideoURL2 = 'https://www.tiktok.com/' // https://www.tiktok.com/${videoUsername}/video/${videoId}
+// ------------------ SIGNLE VIDEO ---------------------- //
 
 // const profileURL = 'https://www.tiktok.com/node/share/user/@' // fetch profile old URL
 const searchProfileURL = 'https://www.tiktok.com/api/search/user/full/' // search profiles
@@ -419,6 +425,37 @@ const scrape = async (url, options) => {
 // ------------------ SCRAPE VIDEOS ---------------------- //
 
 // ------------------ PREPARE HASHTAG UTL ---------------------- //
+const getSingleVideo = async (account, videoId) => {
+    return new Promise(async (resovle, reject) => {
+
+        // ----------- Request ---------- //
+
+        const tiktok_account = account.replace('@', '')
+        const params = {
+            "enter_form": "video_detail",
+            "is_from_webapp": "v1",
+            "item_id": videoId
+        }
+
+        const qsObject = new URLSearchParams(params)
+        const qs = qsObject.toString()
+        const url = singleVideoURL2 + `@${tiktok_account}/video/${videoId}/` + `?` + qs
+        const resVideoMeta = await axios({
+            method: 'GET',
+            headers: headers,
+            url: url,
+        })
+
+        const $ = cheerio.load(resVideoMeta.data)
+        const script = $('#SIGI_STATE').html()
+        console.log('Response.....')
+        console.log(script)
+
+    })
+}
+// ------------------ PREPARE HASHTAG UTL ---------------------- //
+
+// ------------------ PREPARE HASHTAG UTL ---------------------- //
 const getTikTokByHashtag = async (hashtag, options) => {
 
     console.log('fetching by hashtag.......')
@@ -466,9 +503,6 @@ const getTikTokByAccount = async (account, options) => {
     return new Promise(async (resovle, reject) => {
         try {
 
-            // refresh the msToken for request the profile
-            await refreshMsToken();
-
             const tiktokAcc = account.replace('@', '')
 
             // Account used with count and cursor, not using with offset
@@ -504,7 +538,7 @@ const getTikTokByAccount = async (account, options) => {
 
             baseParamsAccount.fakeParams.msToken = cookie.msToken
             baseParamsAccount.fakeParams['X-bogus'] = signature['x-bogus']
-            baseParamsAccount.fakeParams['_signature'] = signature['_signature']
+            baseParamsAccount.fakeParams['_signature'] = signature['signature']
 
             const qsObjectFake2 = new URLSearchParams(baseParamsAccount.fakeParams)
             const qsFake2 = qsObjectFake2.toString()
@@ -598,4 +632,5 @@ function objToString (obj) {
 module.exports = {
     getTikTokByHashtag,
     getTikTokByAccount,
+    getSingleVideo
 }

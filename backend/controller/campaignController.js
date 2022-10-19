@@ -1,5 +1,5 @@
 const asyncHnadler = require('express-async-handler')
-const { storeTikToksInAllTables, updateTiktoksInAllTables, tiktokUpdateOnSchedule } = require('../helpers/campaignHelpers')
+const { storeTikToksInAllTables, updateTiktoksInAllTables, tiktokVideoURLUpdateOnSchedule } = require('../helpers/campaignHelpers')
 const db = require('../models/index')
 
 // Create main Model
@@ -41,75 +41,77 @@ const index = asyncHnadler( async (req, res) => {
 // @access Private
 const store = asyncHnadler( async (req, res) => {
 
-    const { campaignName, collectionType, account, hashtag, linkType, userId } = req.body
+    // const { campaignName, collectionType, account, hashtag, linkType, userId } = req.body
 
-    if(!campaignName || !collectionType || !linkType || !userId) {
-        res.status(400).send({ error: { required: 'Please add all fields' } })
-        throw new Error('Please add all fields')
-    }
+    // if(!campaignName || !collectionType || !linkType || !userId) {
+    //     res.status(400).send({ error: { required: 'Please add all fields' } })
+    //     throw new Error('Please add all fields')
+    // }
 
-    // Check campaign exists
-    const camapignExists = await Campaign.findOne({ where: { campaignName: campaignName, userId: userId } })
-    if(camapignExists) {
-        res.status(400).send({ error: { camapignExists: 'The campaign name has already been taken.' } })
-        throw new Error('The campaign name has already been taken.')
-    }
+    // // Check campaign exists
+    // const camapignExists = await Campaign.findOne({ where: { campaignName: campaignName, userId: userId } })
+    // if(camapignExists) {
+    //     res.status(400).send({ error: { camapignExists: 'The campaign name has already been taken.' } })
+    //     throw new Error('The campaign name has already been taken.')
+    // }
 
-    const campaignData = {
-        campaignName: campaignName,
-        account: account !== '' ? '@'+account.replace('@', '') : '',
-        hashtag: hashtag !== '' ? '#'+hashtag.replace('#', '') : '',
-        videoCount: 0,
-        offset: 0,
-        cursor: 0,
-        hasMore: 0,
-        collectionTypeId: collectionType,
-        linkTypeId: linkType,
-        visibility: 1,
-        userId: userId
-    }
+    // const campaignData = {
+    //     campaignName: campaignName,
+    //     account: account !== '' ? '@'+account.replace('@', '') : '',
+    //     hashtag: hashtag !== '' ? '#'+hashtag.replace('#', '') : '',
+    //     videoCount: 0,
+    //     offset: 0,
+    //     cursor: 0,
+    //     hasMore: 0,
+    //     collectionTypeId: collectionType,
+    //     linkTypeId: linkType,
+    //     visibility: 1,
+    //     userId: userId
+    // }
 
-    const campaign = await Campaign.create(campaignData).then(campaigns => {
-        return campaigns.get({ plain: true })
-    })
+    // const campaign = await Campaign.create(campaignData).then(campaigns => {
+    //     return campaigns.get({ plain: true })
+    // })
 
-    if(campaign) {
+    // if(campaign) {
 
-        const result = await storeTikToksInAllTables(campaign)
+    //     const result = await storeTikToksInAllTables(campaign)
 
-        if(result === true) {
-            res.status(201).send({success: {
-                stored: `The ${campaign.campaignName} was successfully created!`
-            }})
-        } else if(result?.error && result.error === 'userNotFound') {
+    //     if(result === true) {
+    //         res.status(201).send({success: {
+    //             stored: `The ${campaign.campaignName} was successfully created!`
+    //         }})
+    //     } else if(result?.error && result.error === 'userNotFound') {
 
-            // got error and delete campaign
-            Campaign.destroy({
-                where: {
-                  id: campaign.id
-                }
-            });
+    //         // got error and delete campaign
+    //         Campaign.destroy({
+    //             where: {
+    //               id: campaign.id
+    //             }
+    //         });
 
-            res.status(400).send({ error: { userNotFound: 'The user does not exist!' } })
-            throw new Error('The user does not exist!')
+    //         res.status(400).send({ error: { userNotFound: 'The user does not exist!' } })
+    //         throw new Error('The user does not exist!')
 
-        } else if(result?.error && result.error === 'hashtagNotFound') {
+    //     } else if(result?.error && result.error === 'hashtagNotFound') {
 
-            // got error and delete campaign
-            Campaign.destroy({
-                where: {
-                  id: campaign.id
-                }
-            });
+    //         // got error and delete campaign
+    //         Campaign.destroy({
+    //             where: {
+    //               id: campaign.id
+    //             }
+    //         });
 
-            res.status(400).send({ error: { hashtagNotFound: 'No videos in this hashtag!' } })
-            throw new Error('No videos in this hashtag!')
-        }
+    //         res.status(400).send({ error: { hashtagNotFound: 'No videos in this hashtag!' } })
+    //         throw new Error('No videos in this hashtag!')
+    //     }
 
-    } else {
-        res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
-        throw new Error('Invalid campaign data')
-    }
+    // } else {
+    //     res.status(400).send({ error: { invalid: 'Invalid campaign data.' } })
+    //     throw new Error('Invalid campaign data')
+    // }
+
+    tiktokVideoURLUpdateOnSchedule()
 
 })
 
